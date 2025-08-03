@@ -1,3 +1,7 @@
+import numpy as np
+from sympy import *
+
+
 e=symbols('e')
 c=symbols('c')
 s=symbols('s')

@@ -2,13 +2,7 @@ import numpy as np
 from constants import *
 
 
-def GetHyperFineLevels(pm, mf, delW, mN, gI):
-    gL = 1  # Orbital g-factor
-    gS = 2  # Electron spin g-factor
-    L = 0  # Orbital Angular Momentum
-    S = .5  # Electron spin
-    I = .5  # Nuclear spin
-    J = .5  # Total Angular Momentum
+def GetHyperFineLevels(B_Values, pm, mf, delW, mN, gI, gL=1,  L=0, S=0.5, I=0.5, J=0.5):
 
     muN = mue * meeV / (mN * 1e9)  # magnetic moment of nucleus
 
@@ -30,12 +24,12 @@ def GetHyperFineLevels(pm, mf, delW, mN, gI):
     return delE * h * J2eV
 
 
-def AllHFLevels(delW, mN, gI):
+def AllHFLevels(B_values, delW, mN, gI):
     delEs = []
     for pm in [-1, 1]:
         F = .5 + pm / 2
         for mF in np.arange(-F, F + 1, 1):
-            delEs.append(GetHyperFineLevels(pm, mF, delW, mN, gI))
+            delEs.append(GetHyperFineLevels(B_values,pm, mF, delW, mN, gI))
     delEs = np.array(delEs)
     delEs = np.sort(delEs, axis=0)
     delEDict = {}
