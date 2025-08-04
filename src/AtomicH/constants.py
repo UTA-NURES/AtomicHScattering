@@ -8,6 +8,8 @@ kb             = 1.380649e-23  # Boltzmann constant in JK^-1
 ge             = 2.002319      # Electron g-factor
 meeV           = .511e6        # mass of electron
 mue            = 9.27e-24      # magnetic moment of electron
+game           = -28024.9*1e6  # electron gamma factor in Hz T^-1
+finestructure  = 1/137
 
 # Unit conversions
 BohrInAng      = .529177210544
@@ -28,3 +30,5 @@ mH             = 1.00784      # Mass of hydrogen in Dalton
 mT             = 3.01604928   # Mass of tritium in Dalton
 muT            = mT*DaltonInEV/2
 muH            = mH*DaltonInEV/2
+gamH           = 42.577*1e6   # Gyromagnetic constant for H In Hz T^-1
+gamT            = 45.415*1e6  # Gyromagnetic constant for T In Hz T^-1

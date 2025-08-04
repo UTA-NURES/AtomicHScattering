@@ -37,3 +37,6 @@ def AllHFLevels(B_values, delW, mN, gI):
         letter = chr(97 + i)
         delEDict[letter] = delEs[i]
     return delEDict
+
+def Theta(a,B,gamN):
+    return(0.5*np.arctan(a/(2*B*(game+gamN))))
