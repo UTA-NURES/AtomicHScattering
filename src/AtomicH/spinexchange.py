@@ -64,3 +64,4 @@ def GetGFactor(alpha='d',beta='d',alphaprime='a',betaprime='a',which='T', B_valu
     SpatialPart = GetSpatialPart(mu, alpha,beta,alphaprime,betaprime, HFLevels, triplet_potential, singlet_potential,temp,rhos)
 
     return (SpinPart*SpatialPart)
+

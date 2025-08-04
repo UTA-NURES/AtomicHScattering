@@ -21,13 +21,13 @@ def p_abs(mu, pin, epsa, epsb, epsprimea, epsprimeb):
     psquared = pin**2 + mu * (epsa + epsb - epsprimea - epsprimeb)
     return np.sqrt(psquared)
 
-def GetIntegral(rhos,alphain, betain, alphaout, betaout, mu, temp, potential, how_to_int):
+def GetIntegral(rhos,alphain, betain, alphaout, betaout, mu, temp, potential, how_to_int, lin=0, lout=2):
 
     P1 = p_of_temp(mu, temp)
     P2 = pprime(P1, alphain, betain, alphaout, betaout, mu)
 
-    InState =  np.array(elastic.Wave_Function(rhos, P1, 0, mu, potential, how_to_int)[0])
-    OutState = np.array(elastic.Wave_Function(rhos, P2, 2, mu, potential, how_to_int)[0])
+    InState =  np.array(elastic.Wave_Function(rhos, P1, lin, mu, potential, how_to_int)[0])
+    OutState = np.array(elastic.Wave_Function(rhos, P2, lout, mu, potential, how_to_int)[0])
 
     Integrand = interp1d(rhos, InState * OutState / rhos ** 3, kind='quadratic')
     Integral = quad(Integrand, rhos[0], rhos[-1])[0] / (P1 * P2)
@@ -35,7 +35,7 @@ def GetIntegral(rhos,alphain, betain, alphaout, betaout, mu, temp, potential, ho
 
 
 
-def GetSpatialPart(mu, alpha,beta,alphaprime,betaprime, B_values,HFLevels, potential,temp=5e-4,rhos=np.linspace(1e-9,0.75,20000)):
+def GetSpatialPart(mu, alpha,beta,alphaprime,betaprime, B_values,HFLevels, potential,temp=5e-4,rhos=np.linspace(1e-9,0.75,20000),lin=0,lout=2):
     SpatialPart = []
     for i in range(0,len(HFLevels[alpha])):
         aHf = HFLevels[alpha][i]
@@ -47,9 +47,9 @@ def GetSpatialPart(mu, alpha,beta,alphaprime,betaprime, B_values,HFLevels, poten
         Pout = pprime(Pin, aHf, bHf, apHf, bpHf, mu)
 
         if B_values[i]<= 8.5:
-            Integral = GetIntegral(rhos,aHf, bHf, apHf, bpHf, mu, temp, potential, 'Radau')
+            Integral = GetIntegral(rhos,aHf, bHf, apHf, bpHf, mu, temp, potential, 'Radau',lin,lout)
         else:
-            Integral = GetIntegral(rhos,aHf, bHf, apHf, bpHf, mu, temp, potential, 'RK45')
+            Integral = GetIntegral(rhos,aHf, bHf, apHf, bpHf, mu, temp, potential, 'RK45',lin,lout)
 
         SpatialPart.append(Pout * mu * Integral**2)
         i = i + 1

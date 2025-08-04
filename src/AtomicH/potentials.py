@@ -72,3 +72,27 @@ def Kolos_SingletCombo(rho):
     Decide2=(Rp>=split1_2)*(Rp<split2_3)
     Decide3=(Rp>=split2_3)
     return (Decide1*(interp_KolosSinglet1(Rp) + 1)  + Decide2*(interp_KolosSinglet2(Rp) + 1) + Decide3*(interp_KolosSinglet2(split2_3) + 1)*(Rp/split2_3)**-6) * HartreeInEV
+
+dat_Jamieson = pd.read_excel(path+"/InputData/Potential_Jamieson.xlsx")
+
+interp_JamiesonSinglet = interp1d(dat_Jamieson.R, dat_Jamieson.Singlet, kind = 'cubic',bounds_error=False, fill_value='extrapolate')
+interp_JamiesonTriplet = interp1d(dat_Jamieson.R, dat_Jamieson.Triplet, kind = 'cubic',bounds_error=False,fill_value='extrapolate')
+
+def Jamieson_Singlet(rho):
+    return (interp_JamiesonSinglet(rho/BohrInAng * hcInEVAngstrom) + 1) * HartreeInEV
+
+def Jamieson_Triplet(rho):
+    return (interp_JamiesonTriplet(rho/ BohrInAng * hcInEVAngstrom) + 1) * HartreeInEV
+
+def Jamieson_TripletCombo(rho):
+    Rp=rho/BohrInAng * hcInEVAngstrom
+    maxx=np.max(interp_JamiesonTriplet.x)
+    Decide = (Rp < maxx)
+    return (Decide * (interp_JamiesonTriplet(Rp)+1) + (1-Decide)*(interp_JamiesonTriplet(maxx)+1)*(Rp/maxx)**-6 ) * HartreeInEV
+
+def Jamieson_SingletCombo(rho):
+    Rp = rho / BohrInAng * hcInEVAngstrom
+    maxx = np.max(interp_JamiesonSinglet.x)
+    Decide = (Rp < maxx)
+    return (Decide * (interp_JamiesonSinglet(Rp) + 1) + (1 - Decide) * (interp_JamiesonSinglet(maxx) + 1) * (Rp / maxx) ** -6 )* HartreeInEV
+
