@@ -96,3 +96,11 @@ def Jamieson_SingletCombo(rho):
     Decide = (Rp < maxx)
     return (Decide * (interp_JamiesonSinglet(Rp) + 1) + (1 - Decide) * (interp_JamiesonSinglet(maxx) + 1) * (Rp / maxx) ** -6 )* HartreeInEV
 
+
+Triplets = {"Silvera":Silvera_Triplet,
+            "Silvera2":Silvera_Triplet2,
+            "Uncorrected Silvera":UnCorrectedSilvera_Triplet,
+            "Jamieson":Jamieson_TripletCombo}
+
+Singlets = {"Kolos":Kolos_SingletCombo,
+            "Jamieson":Jamieson_SingletCombo}
