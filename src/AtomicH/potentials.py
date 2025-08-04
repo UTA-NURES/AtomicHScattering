@@ -74,7 +74,7 @@ def Kolos_SingletCombo(rho):
     return (Decide1*(interp_KolosSinglet1(Rp) + 1)  + Decide2*(interp_KolosSinglet2(Rp) + 1) + Decide3*(interp_KolosSinglet2(split2_3) + 1)*(Rp/split2_3)**-6) * HartreeInEV
 
 dat_KolosTriplet = np.genfromtxt(path+"/InputData/Kolos_Triplet.csv", delimiter=',', skip_header=1)
-interp_KolosTriplet = interp1d(dat_KolosTriplet[:,0], dat_KolosTriplet[:,1], kind = 'cubic', bounds_error = false, fill_value = 'extrapolate')
+interp_KolosTriplet = interp1d(dat_KolosTriplet[:,0], dat_KolosTriplet[:,1], kind = 'cubic', bounds_error = False, fill_value = 'extrapolate')
 
 def Kolos_Triplet(rho):
     Rp = rho / BohrInAng * hcInEVAngstrom 
