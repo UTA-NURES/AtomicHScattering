@@ -96,6 +96,20 @@ def Jamieson_SingletCombo(rho):
     Decide = (Rp < maxx)
     return (Decide * (interp_JamiesonSinglet(Rp) + 1) + (1 - Decide) * (interp_JamiesonSinglet(maxx) + 1) * (Rp / maxx) ** -6 )* HartreeInEV
 
+def Jamieson_Kolos_Mixed(rho):
+    Rp = rho / BohrInAng * hcInEVAngstrom
+    maxx = np.max(interp_JamiesonSinglet.x)
+    minx = np.min(interp_JamiesonSinglet.x)
+    Decide1=(Rp<minx)
+    Decide2 = (Rp>=minx)*(Rp<maxx)
+    Decide3=(Rp>=maxx)
+    V1 = (interp_func(Rp) + 1) * Decide1
+    V2 = (interp_func_sing(Rp) + 1) * Decide2
+    V3 = (interp_func_sing(split2_3) + 1) * (Rp / split2_3) ** -6 * Decide3
+
+    return (V1 + V2 + V3) * HartreeInEV
+
+
 
 Triplets = {"Silvera":Silvera_Triplet,
             "Silvera2":Silvera_Triplet2,
@@ -103,4 +117,5 @@ Triplets = {"Silvera":Silvera_Triplet,
             "Jamieson":Jamieson_TripletCombo}
 
 Singlets = {"Kolos":Kolos_SingletCombo,
-            "Jamieson":Jamieson_SingletCombo}
+            "Pure Jamieson":Jamieson_SingletCombo,
+            "Kolos Jamieson Mixed":Jamieson_Kolos_Mixed}
