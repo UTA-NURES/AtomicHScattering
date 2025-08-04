@@ -35,7 +35,7 @@ def GetIntegral(rhos,alphain, betain, alphaout, betaout, mu, temp, potential, ho
 
 
 
-def GetSpatialPart(mu, alpha,beta,alphaprime,betaprime, B_values,HFLevels, potential,temp=5e-4,rhos=np.linspace(1e-9,0.75,20000),lin=0,lout=2):
+def GetSpatialPart(mu, alpha,beta,alphaprime,betaprime, B_values,HFLevels, potential,temp=5e-4,rhos=np.linspace(1e-9,0.75,2000),lin=0,lout=2):
     SpatialPart = []
     for i in range(0,len(HFLevels[alpha])):
         aHf = HFLevels[alpha][i]
@@ -83,7 +83,7 @@ def GetSpinPart(delW, alpha,beta,alphaprime,betaprime,B_values, gam):
     return(SpinPart)
 
 
-def GetGFactor(alpha='d',beta='d',alphaprime='a',betaprime='a',which='T', B_values=np.logspace(-3,1,50),potential=potentials.Silvera_Triplet,temp=5e-4,rhos=np.linspace(1e-9,0.75,20000)):
+def GetGFactor(alpha='d',beta='d',alphaprime='a',betaprime='a',which='T', B_values=np.logspace(-3,1,50),potential=potentials.Silvera_Triplet,temp=5e-4,rhos=np.linspace(1e-9,0.75,2000)):
 
     if(which=='T'):
         delW = constants.delWT
