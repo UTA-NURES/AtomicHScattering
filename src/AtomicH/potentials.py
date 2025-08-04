@@ -46,9 +46,9 @@ def TCorrectedSilvera_Triplet(R):
     return Silvera_Triplet(R)*(1-(2/3)*CorrInterp(R))
 
 
-#==========================
-# Kolos singlets
-#==========================
+#===========================
+# Kolos Potentials
+#===========================
 
 
 dat_KolosSinglet1 = np.genfromtxt(path+"/InputData/Singlet1_Kolos.csv", delimiter=',', skip_header=1)
@@ -72,6 +72,21 @@ def Kolos_SingletCombo(rho):
     Decide2=(Rp>=split1_2)*(Rp<split2_3)
     Decide3=(Rp>=split2_3)
     return (Decide1*(interp_KolosSinglet1(Rp) + 1)  + Decide2*(interp_KolosSinglet2(Rp) + 1) + Decide3*(interp_KolosSinglet2(split2_3) + 1)*(Rp/split2_3)**-6) * HartreeInEV
+
+dat_KolosTriplet = np.genfromtxt(path+"/InputData/Kolos_Triplet.csv", delimiter=',', skip_header=1)
+interp_KolosTriplet = interp1d(dat_KolosTriplet[:,0], dat_KolosTriplet[:,1], kind = 'cubic', bounds_error = false, fill_value = 'extrapolate')
+
+def Kolos_Triplet(rho):
+    Rp = rho / BohrInAng * hcInEVAngstrom 
+    maxx = np.max(interp_JamiesonTriplet.x)
+    Decide = (Rp < maxx)
+    return (Decide * (interp_KolosTriplet(Rp) + 1) + (1 - Decide) * (interp_KolosTriplet(maxx) + 1) * (Rp / maxx) ** -6) * HartreeInEV
+
+
+#==========================
+# Jamieson Potentials
+#==========================
+
 
 dat_Jamieson = pd.read_excel(path+"/InputData/Potential_Jamieson.xlsx")
 
@@ -114,6 +129,7 @@ def Jamieson_Kolos_Mixed(rho):
 Triplets = {"Silvera":Silvera_Triplet,
             "Silvera2":Silvera_Triplet2,
             "Uncorrected Silvera":UnCorrectedSilvera_Triplet,
+            "Kolos":Kolos_Triplet,
             "Jamieson":Jamieson_TripletCombo}
 
 Singlets = {"Kolos":Kolos_SingletCombo,
