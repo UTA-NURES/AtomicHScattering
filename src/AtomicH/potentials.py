@@ -4,6 +4,10 @@ import os
 from scipy.interpolate import interp1d
 from constants import *
 
+#=====================================
+# Silvera potentials in analytic form
+#=====================================
+
 def Silvera_Triplet(Rho):
     R = Rho * hcInEVAngstrom / 4.16
     D = 1.28
@@ -20,8 +24,13 @@ def Silvera_J(Rho):
     P = np.exp(-.288-.275*R-.176*R**2+.0068*R**3)
     return P * HartreeInEV
 
+#Note - Silvera says this is not an accurate representation, use with caution
 def Silvera_Singlet(R):
     return Silvera_Triplet(R) - Silvera_J(R)
+
+#==========================
+# The adiabatic correction
+#==========================
 
 path=os.path.dirname(os.path.abspath(__file__))
 dat_Adiabatic=pd.read_excel(path+"/InputData/AdiabaticCorrection_Kolos.xlsx")
@@ -35,3 +44,31 @@ def UnCorrectedSilvera_Triplet(R):
 
 def TCorrectedSilvera_Triplet(R):
     return Silvera_Triplet(R)*(1-(2/3)*CorrInterp(R))
+
+
+#==========================
+# Kolos singlets
+#==========================
+
+
+dat_KolosSinglet1 = np.genfromtxt(path+"/InputData/Singlet1_Kolos.csv", delimiter=',', skip_header=1)
+dat_KolosSinglet2 = np.genfromtxt(path+"/InputData/Singlet2_Kolos.csv", delimiter=',', skip_header=1)
+
+interp_KolosSinglet1 = interp1d(dat_KolosSinglet1[:,0], dat_KolosSinglet1[:,1], kind = 'cubic',bounds_error=False, fill_value='extrapolate')
+interp_KolosSinglet2 = interp1d(dat_KolosSinglet2[:,0], -dat_KolosSinglet2[:,1], kind = 'cubic',bounds_error=False,fill_value='extrapolate')
+
+
+def Kolos_Singlet1(rho):
+    return (interp_KolosSinglet1(rho/BohrInAng * hcInEVAngstrom) + 1) * HartreeInEV
+
+def Kolos_Singlet2(rho):
+    return (interp_KolosSinglet2(rho/ BohrInAng * hcInEVAngstrom) + 1) * HartreeInEV
+
+def Kolos_SingletCombo(rho):
+    Rp = rho / BohrInAng * hcInEVAngstrom
+    split1_2=6.3  # Make the split within the range where function has support (between last 2 bins)
+    split2_3=11.5 #  [As above]
+    Decide1=(Rp<split1_2)
+    Decide2=(Rp>=split1_2)*(Rp<split2_3)
+    Decide3=(Rp>=split2_3)
+    return (Decide1*(interp_KolosSinglet1(Rp) + 1)  + Decide2*(interp_KolosSinglet2(Rp) + 1) + Decide3*(interp_KolosSinglet2(split2_3) + 1)*(Rp/split2_3)**-6) * HartreeInEV

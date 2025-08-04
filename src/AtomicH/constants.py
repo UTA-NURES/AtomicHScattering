@@ -1,14 +1,14 @@
 import numpy as np
 
 # Fundamental constants
-h              = 6.6260715e-34 # Planck constant in m^2 kg / s
-hbar           = h/(2*np.pi)   #     h / 2pi
-C              = 2.99792458e8  # Speed of light in m/s
-kb             = 1.380649e-23  # Boltzmann constant in JK^-1
-ge             = 2.002319      # Electron g-factor
-meeV           = .511e6        # mass of electron
-mue            = 9.27e-24      # magnetic moment of electron
-game           = -28024.9*1e6  # electron gamma factor in Hz T^-1
+h              = 6.6260715e-34  # Planck constant in m^2 kg / s
+hbar           = h/(2*np.pi)    #     h / 2pi
+C              = 2.99792458e8   # Speed of light in m/s
+kb             = 1.380649e-23   # Boltzmann constant in JK^-1
+ge             = 2.002319       # Electron g-factor
+meeV           = 5.1099895069e5 # mass of electron
+mue            = 9.27e-24       # magnetic moment of electron
+game           = -28024.9*1e6   # electron gamma factor in Hz T^-1
 finestructure  = 1/137
 
 # Unit conversions
@@ -16,10 +16,11 @@ BohrInAng      = .529177210544
 HartreeInEV    = 27.211386245981
 hcInEVAngstrom = 1973.2698044
 BohrInEV       = BohrInAng/hcInEVAngstrom
-K2eV           = 8.617333262e-5
 cmm1_in_eV     = 1.23984198E-4
-J2eV           = 6.242e18
+J2eV           = 6.2415090744e18
+K2eV           = kb*J2eV
 DaltonInEV     = 931.49410372*1e6
+NatUnits_cm3sm1= 11.6
 
 # H and T constants
 delWH          = 1.4204057517667e9 # Hyperfine splitting of hydrogen in Hz

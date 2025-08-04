@@ -17,6 +17,10 @@ def pprime(pin, epsa, epsb, epsprimea, epsprimeb, mu):
     pprime = np.sqrt(2 * mu * Eprime)
     return pprime
 
+def p_abs(mu, pin, epsa, epsb, epsprimea, epsprimeb):
+    psquared = pin**2 + mu * (epsa + epsb - epsprimea - epsprimeb)
+    return np.sqrt(psquared)
+
 def GetIntegral(rhos,alphain, betain, alphaout, betaout, mu, temp, potential, how_to_int):
 
     P1 = p_of_temp(mu, temp)
@@ -93,13 +97,12 @@ def GetGFactor(alpha='d',beta='d',alphaprime='a',betaprime='a',which='T', B_valu
         mu   = constants.muH
         gI   = constants.gIH
 
-    Conversion = 11.6 # natural units to cm^3 s^-1
     mue = np.sqrt(4 * np.pi * constants.finestructure) / (2 * constants.meeV)
-    Pre_Factor = 1 / (5 * np.pi) * mue ** 4
+    Pre_Factor = 1 / (5 * np.pi) * mue ** 4 * constants.NatUnits_cm3sm1
 
     HFLevels = hyperfine.AllHFLevels(B_values,delW, mu, gI)
     Spatials = GetSpatialPart(mu, alpha,beta,alphaprime,betaprime, B_values,HFLevels, potential,temp,rhos)
     Spins    = GetSpinPart(delW, alpha,beta,alphaprime,betaprime,B_values, gam)
 
-    return(Conversion * Pre_Factor * Spatials * Spins)
+    return(Pre_Factor * Spatials * Spins)
 
