@@ -34,7 +34,7 @@ def GetSpatialPart(mu, alpha,beta,alphaprime,betaprime, HFLevels, triplet_potent
 def GetSpinPart(alpha,beta,alphaprime, betaprime,delW, B_values, gamN):
     SpinPart = []
     for Bs in B_values:
-        th = hyperfine.Theta(delW, Bs, gamN)
+        th = hyperfine.Theta(2*delW, Bs, gamN)
 
         trans = spinbasis.TransformMatrix(spinbasis.TripletProj - spinbasis.SingletProj, spinbasis.Rotator)
         El = (spinbasis.GetElement(trans, alpha, beta, 1, alphaprime, betaprime, 1)) ** 2

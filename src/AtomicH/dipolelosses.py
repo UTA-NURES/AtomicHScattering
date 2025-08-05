@@ -65,7 +65,7 @@ def GetSpinPart(delW, alpha,beta,alphaprime,betaprime,B_values, gam):
     rotator = []
     Rets=spinbasis.GetRotatedElements()
     for b in B_values:
-        theta = hyperfine.Theta(delW, b, gam)
+        theta = hyperfine.Theta(2*delW, b, gam)
         value = 0
         for m in Rets.keys():
             El = ( spinbasis.GetElement(Rets[m], alpha, beta, 1, alphaprime, betaprime, 1)) **2

@@ -40,3 +40,4 @@ def AllHFLevels(B_values, delW, mN, gI):
 
 def Theta(delW,B,gamN):
     return(0.5*np.arctan(delW/(2*B*(game+gamN))))
+
