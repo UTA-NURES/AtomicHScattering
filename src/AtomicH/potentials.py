@@ -128,7 +128,7 @@ def Jamieson_Kolos_Mixed(rho):
 
 Triplets = {"Silvera":Silvera_Triplet,
             #"Silvera2":Silvera_Triplet2,
-            "Uncorrected Silvera":UnCorrectedSilvera_Triplet,
+            #"Uncorrected Silvera":UnCorrectedSilvera_Triplet,
             "Kolos":Kolos_Triplet,
             "Jamieson":Jamieson_TripletCombo}
 
