@@ -78,7 +78,7 @@ interp_KolosTriplet = interp1d(dat_KolosTriplet[:,0], dat_KolosTriplet[:,1], kin
 
 def Kolos_Triplet(rho):
     Rp = rho / BohrInAng * hcInEVAngstrom 
-    maxx = np.max(interp_JamiesonTriplet.x)
+    maxx = np.max(interp_KolosTriplet.x)
     Decide = (Rp < maxx)
     return (Decide * (interp_KolosTriplet(Rp) + 1) + (1 - Decide) * (interp_KolosTriplet(maxx) + 1) * (Rp / maxx) ** -6) * HartreeInEV
 
