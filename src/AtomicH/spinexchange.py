@@ -6,62 +6,47 @@ import spinbasis
 import potentials
 import numpy as np
 
+SpinExChannels=[]
+SpinExChannels.append({'alpha':'c','beta':'c','alphaprime':'a','betaprime':'a'})
+SpinExChannels.append({'alpha':'c','beta':'c','alphaprime':'a','betaprime':'c'})
+SpinExChannels.append({'alpha':'c','beta':'c','alphaprime':'b','betaprime':'d'})
 
-def GetSpatialPart(mu, alpha,beta,alphaprime,betaprime, HFLevels, triplet_potential, singlet_potential,temp=5e-4,rhos=np.linspace(1e-9,100*constants.BohrInAng/constants.hcInEVAngstrom,100),how_to_int='Radau'):
-    SpatialPart = []
 
-    for i in range(0,len(HFLevels[alpha])):
-        aHf = HFLevels[alpha][i]
-        bHf = HFLevels[beta][i]
-        apHf = HFLevels[alphaprime][i]
-        bpHf = HFLevels[betaprime][i]
+def GetSpatialPart(channel=SpinExChannels[0], B_value=1e-5, consts=constants.HydrogenConstants, Temperature=5e-4, triplet_potential=potentials.Silvera_Triplet,singlet_potential=potentials.Kolos_SingletCombo,rhos=np.linspace(1e-9,0.75,2000),how_to_int='Radau'):
+    HFLevels = hyperfine.AllHFLevels(B_value, consts)
 
-        Pin    = dipolelosses.p_of_temp(mu, temp)
-        Pout   = dipolelosses.pprime(Pin, aHf, bHf, apHf, bpHf, mu)
-        Pabs   = dipolelosses.p_abs(mu, Pin, aHf, bHf, apHf, bpHf)
+    aHf =  HFLevels[channel['alpha']]
+    bHf =  HFLevels[channel['beta']]
+    apHf = HFLevels[channel['alphaprime']]
+    bpHf = HFLevels[channel['betaprime']]
 
-        const = np.pi / (mu * Pin)*constants.NatUnits_cm3sm1
-        tdeltaaa = elastic.GetPhaseShift(rhos, Pabs, 0, mu, triplet_potential, how_to_int)[-1]
-        sdeltaaa = elastic.GetPhaseShift(rhos, Pabs, 0, mu, singlet_potential, how_to_int)[-1]
+    Pin  = dipolelosses.p_of_temp(consts.mu, Temperature)
+    Pout = dipolelosses.pprime(Pin, aHf, bHf, apHf, bpHf, consts.mu)
+    Pabs = dipolelosses.p_abs(consts.mu, Pin, aHf, bHf, apHf, bpHf)
 
-        SpatialPart.append(const * (Pin * Pout / Pabs ** 2) * (np.sin(tdeltaaa - sdeltaaa) ** 2))
+    const = np.pi / (consts.mu * Pin)*constants.NatUnits_cm3sm1
+    tdeltaaa = elastic.GetPhaseShift(rhos, Pabs, 0, consts.mu, triplet_potential, how_to_int)[-1]
+    sdeltaaa = elastic.GetPhaseShift(rhos, Pabs, 0, consts.mu, singlet_potential, how_to_int)[-1]
 
-    SpatialPart = np.array(SpatialPart)
+    SpatialPart = (const * (Pin * Pout / Pabs ** 2) * (np.sin(tdeltaaa - sdeltaaa) ** 2))
 
     return (SpatialPart)
 
 
-def GetSpinPart(alpha,beta,alphaprime, betaprime,delW, B_values, gamN):
-    SpinPart = []
-    for Bs in B_values:
-        th = hyperfine.Theta(2*delW, Bs, gamN)
+def GetSpinPart(channel=SpinExChannels[0], B_value=1e-5, consts=constants.HydrogenConstants):
 
-        trans = spinbasis.TransformMatrix(spinbasis.TripletProj - spinbasis.SingletProj, spinbasis.Rotator)
-        El = (spinbasis.GetElement(trans, alpha, beta, 1, alphaprime, betaprime, 1)) ** 2
-        Value = El.subs(spinbasis.sr2, np.sqrt(2)).subs(spinbasis.sr3, np.sqrt(3)).subs(spinbasis.c, np.cos(th)).subs(spinbasis.s, np.sin(th))
+    th = hyperfine.Theta(2*consts.delW, B_value, consts.gam)
+    trans = spinbasis.TransformMatrix(spinbasis.TripletProj - spinbasis.SingletProj, spinbasis.Rotator)
+    El = (spinbasis.GetElement(trans, channel['alpha'], channel['beta'], 1, channel['alphaprime'], channel['betaprime'], 1)) ** 2
+    SpinPart = El.subs(spinbasis.sr2, np.sqrt(2)).subs(spinbasis.sr3, np.sqrt(3)).subs(spinbasis.c, np.cos(th)).subs(spinbasis.s, np.sin(th))
 
-        SpinPart.append(Value)
-    SpinPart = np.array(SpinPart)
-    return SpinPart
+    return (SpinPart)
 
 
-def GetGFactor(alpha='d',beta='d',alphaprime='a',betaprime='a',which='T', B_values=np.logspace(-3,1,50),triplet_potential=potentials.Silvera_Triplet,singlet_potential=potentials.Silvera_Singlet,temp=5e-4,rhos=np.linspace(1e-9,0.75,20000)):
-    if(which=='T'):
-        delW = constants.delWT
-        gam  = constants.gamT
-        mu   = constants.muT
-        gI   = constants.gIT
+def GetGFactor(channel=SpinExChannels[0],  B_value=1e-5, consts=constants.HydrogenConstants, Temperature=5e4, triplet_potential=potentials.Silvera_Triplet,singlet_potential=potentials.Kolos_SingletCombo,rhos=np.linspace(1e-9,0.75,20000),how_to_int='Radau'):
 
-    elif(which=='H'):
-        delW = constants.delWH
-        gam  = constants.gamH
-        mu   = constants.muH
-        gI   = constants.gIH
-
-    HFLevels = hyperfine.AllHFLevels(B_values,delW, mu, gI)
-
-    SpinPart    = GetSpinPart(alpha,beta,alphaprime, betaprime,delW, B_values, gam)
-    SpatialPart = GetSpatialPart(mu, alpha,beta,alphaprime,betaprime, HFLevels, triplet_potential, singlet_potential,temp,rhos)
+    SpinPart    = GetSpinPart(    channel, B_value, consts)
+    SpatialPart = GetSpatialPart( channel, B_value, consts, Temperature, triplet_potential, singlet_potential, rhos, how_to_int)
 
     return (SpinPart*SpatialPart)
 

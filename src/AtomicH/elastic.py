@@ -8,7 +8,7 @@ import potentials
 
 
 
-def Wave_Function(rhos,pin,l, mu=muT, potential=potentials.Silvera_Triplet, int_type='Radau'):
+def Wave_Function(rhos,pin,l, mu, potential=potentials.Silvera_Triplet, int_type='Radau'):
     def ddx(y, rho, mu, Potential, l, pin):
         u = y[0]
         v = y[1]
@@ -26,7 +26,7 @@ def Wave_Function(rhos,pin,l, mu=muT, potential=potentials.Silvera_Triplet, int_
     #return (np.sqrt(2 / np.pi) * State.y[0] / Normalization[-1], np.sqrt(2 / np.pi) * State.y[1] / Normalization[-1])
     return (State.y[0] / Normalization[-1], State.y[1] / Normalization[-1])
 
-def GetPhaseShift(rhos, p, l=0, mu=muT, potential=potentials.Silvera_Triplet, how_to_int='Radau'):
+def GetPhaseShift(rhos, p, l, mu, potential=potentials.Silvera_Triplet, how_to_int='Radau'):
 
     wf=np.array(Wave_Function(rhos,p, l, mu, potential, how_to_int))
     State = wf[0]
@@ -42,8 +42,8 @@ def GetPhaseShift(rhos, p, l=0, mu=muT, potential=potentials.Silvera_Triplet, ho
     deltas = np.arctan(p * State / dState_dx) - p * rhos
     return deltas
 
-def GetScatteringLength(rhos, p, l=0, mu=muT, potential=potentials.Silvera_Triplet, how_to_int='Radau'):
+def GetScatteringLength(rhos, p, l, mu, potential=potentials.Silvera_Triplet, how_to_int='Radau'):
     return -np.tan(GetPhaseShift(rhos, p, l, mu, potential, how_to_int)) / p
 
-def GetCrossSection(rhos, p, l=0, mu=muT, potential=potentials.Silvera_Triplet, how_to_int='Radau'):
+def GetCrossSection(rhos, p, l, mu, potential=potentials.Silvera_Triplet, how_to_int='Radau'):
     return 8*np.pi*GetScatteringLength(rhos, p, l, mu, potential, how_to_int)**2
