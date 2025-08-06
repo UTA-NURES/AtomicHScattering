@@ -2,6 +2,7 @@ from constants import *
 import scipy
 
 from scipy.integrate import odeint
+from scipy.special import spherical_jn, spherical_yn
 import potentials
 
 
@@ -27,19 +28,18 @@ def Wave_Function(rhos,pin,l, mu, potential=potentials.Silvera_Triplet, int_type
     return (State.y[0] / Normalization[-1], State.y[1] / Normalization[-1])
 
 def GetPhaseShift(rhos, p, l, mu, potential=potentials.Silvera_Triplet, how_to_int='Radau'):
-
     wf=np.array(Wave_Function(rhos,p, l, mu, potential, how_to_int))
     State = wf[0]
     dState_dx = wf[1]
-
-    #Big_delta_l = (rhos * dState_dx - State) / (rhos * State)
-    #jl_ka = spherical_jn(l, p * rhos)
-    #jl_prime_ka = spherical_jn(l, p * rhos, derivative=True)
-    #nl_ka = spherical_yn(l, p * rhos)
-    #nl_prime_ka = spherical_yn(l, p * rhos, derivative=True)
-    
-    # deltas = np.arctan((p*jl_prime_ka - Big_delta_l*jl_ka) / (p*nl_prime_ka - Big_delta_l * nl_ka))
-    deltas = np.arctan(p * State / dState_dx) - p * rhos
+    if(l==0):
+        deltas = np.arctan(p * State / dState_dx) - p * rhos
+    else:
+        Big_delta_l = (rhos * dState_dx - State) / (rhos * State)
+        jl_ka = spherical_jn(l, p * rhos)
+        jl_prime_ka = spherical_jn(l, p * rhos, derivative=True)
+        nl_ka = spherical_yn(l, p * rhos)
+        nl_prime_ka = spherical_yn(l, p * rhos, derivative=True)
+        deltas = np.arctan((p*jl_prime_ka - Big_delta_l*jl_ka) / (p*nl_prime_ka - Big_delta_l * nl_ka))
     return deltas
 
 def GetScatteringLength(rhos, p, l, mu, potential=potentials.Silvera_Triplet, how_to_int='Radau'):
