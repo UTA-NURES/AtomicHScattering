@@ -58,6 +58,29 @@ def GetSpatialPart(mu, alpha,beta,alphaprime,betaprime, B_values,HFLevels, poten
     return(SpatialPart)
 
 
+
+def GetSpatialPartT(mu, alpha,beta,alphaprime,betaprime, B_values,HFLevels, potential,temp=5e-4,rhos=np.linspace(1e-9,0.75,2000),lin=0,lout=2):
+    SpatialPart = []
+    for i in range(0,len(HFLevels[alpha])):
+        aHf = HFLevels[alpha][i]
+        bHf = HFLevels[beta][i]
+        apHf = HFLevels[alphaprime][i]
+        bpHf = HFLevels[betaprime][i]
+
+        Pin = p_of_temp(mu, temp)
+        Pout = pprime(Pin, aHf, bHf, apHf, bpHf, mu)
+
+        if B_values[i]<= 8.5:
+            Integral = GetIntegral(rhos,aHf, bHf, apHf, bpHf, mu, temp, potential, 'Radau',lin,lout)
+        else:
+            Integral = GetIntegral(rhos,aHf, bHf, apHf, bpHf, mu, temp, potential, 'RK45',lin,lout)
+
+        SpatialPart.append(Pout * mu * Integral**2)
+        i = i + 1
+
+    SpatialPart = np.array(SpatialPart)
+    return(SpatialPart)
+
 def GetSpinPart(delW, alpha,beta,alphaprime,betaprime,B_values, gam):
 
 
@@ -83,7 +106,7 @@ def GetSpinPart(delW, alpha,beta,alphaprime,betaprime,B_values, gam):
     return(SpinPart)
 
 
-def GetGFactor(alpha='d',beta='d',alphaprime='a',betaprime='a',which='T', B_values=np.logspace(-3,1,50),potential=potentials.Silvera_Triplet,temp=5e-4,rhos=np.linspace(1e-9,0.75,2000)):
+def GetGFactor(alpha='d',beta='d',alphaprime='a',betaprime='a',which='T', B_values=np.logspace(-3,1,50),potential=potentials.Silvera_Triplet,temp=5e-4,rhos=np.linspace(1e-9,0.75,2000),lin=0,lout=2):
 
     if(which=='T'):
         delW = constants.delWT
@@ -101,7 +124,7 @@ def GetGFactor(alpha='d',beta='d',alphaprime='a',betaprime='a',which='T', B_valu
     Pre_Factor = 1 / (5 * np.pi) * mue ** 4 * constants.NatUnits_cm3sm1
 
     HFLevels = hyperfine.AllHFLevels(B_values,delW, mu, gI)
-    Spatials = GetSpatialPart(mu, alpha,beta,alphaprime,betaprime, B_values,HFLevels, potential,temp,rhos)
+    Spatials = GetSpatialPart(mu, alpha,beta,alphaprime,betaprime, B_values,HFLevels, potential,temp,rhos,lin,lout)
     Spins    = GetSpinPart(delW, alpha,beta,alphaprime,betaprime,B_values, gam)
 
     return(Pre_Factor * Spatials * Spins)

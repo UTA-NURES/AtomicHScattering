@@ -124,7 +124,14 @@ def Jamieson_Kolos_Mixed(rho):
 
     return (V1 + V2 + V3) * HartreeInEV
 
+# ==========================================
+#For illustration only -
+# radial dependence of the dipole potential
+#===========================================
 
+def DipoleRadialPart(rho):
+    muel = np.sqrt(4 * np.pi * finestructure) / (2 * meeV)
+    return muel**2/(4*np.pi*rho**3)*(4*np.pi/5)
 
 Triplets = {"Silvera":Silvera_Triplet,
             #"Silvera2":Silvera_Triplet2,
