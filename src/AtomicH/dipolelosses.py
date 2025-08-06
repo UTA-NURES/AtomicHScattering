@@ -59,31 +59,26 @@ def GetSpatialPart(mu, alpha,beta,alphaprime,betaprime, B_values,HFLevels, poten
 
 
 
-def GetSpatialPartT(mu, alpha,beta,alphaprime,betaprime, B_values,HFLevels, potential,temp=5e-4,rhos=np.linspace(1e-9,0.75,2000),lin=0,lout=2):
+def GetSpatialPartT(mu, alpha,beta,alphaprime,betaprime,HFLevels, potential,temps=np.logspace(-4,2,10),rhos=np.linspace(1e-9,0.75,2000),lin=0,lout=2):
     SpatialPart = []
-    for i in range(0,len(HFLevels[alpha])):
-        aHf = HFLevels[alpha][i]
-        bHf = HFLevels[beta][i]
-        apHf = HFLevels[alphaprime][i]
-        bpHf = HFLevels[betaprime][i]
 
+    aHf = HFLevels[alpha][0]
+    bHf = HFLevels[beta][0]
+    apHf = HFLevels[alphaprime][0]
+    bpHf = HFLevels[betaprime][0]
+
+
+    for temp in temps:
         Pin = p_of_temp(mu, temp)
         Pout = pprime(Pin, aHf, bHf, apHf, bpHf, mu)
 
-        if B_values[i]<= 8.5:
-            Integral = GetIntegral(rhos,aHf, bHf, apHf, bpHf, mu, temp, potential, 'Radau',lin,lout)
-        else:
-            Integral = GetIntegral(rhos,aHf, bHf, apHf, bpHf, mu, temp, potential, 'RK45',lin,lout)
-
+        Integral = GetIntegral(rhos,aHf, bHf, apHf, bpHf, mu, temp, potential, 'Radau',lin,lout)
         SpatialPart.append(Pout * mu * Integral**2)
-        i = i + 1
 
     SpatialPart = np.array(SpatialPart)
     return(SpatialPart)
 
 def GetSpinPart(delW, alpha,beta,alphaprime,betaprime,B_values, gam):
-
-
     NormDiff = 4*np.sqrt(6)
     rotator = []
     Rets=spinbasis.GetRotatedElements()
@@ -129,3 +124,25 @@ def GetGFactor(alpha='d',beta='d',alphaprime='a',betaprime='a',which='T', B_valu
 
     return(Pre_Factor * Spatials * Spins)
 
+def GetGFactorVsT(alpha='d',beta='d',alphaprime='a',betaprime='a',which='T', B_value=1e-5, potential=potentials.Silvera_Triplet,temps=np.logspace(-4,1,10),rhos=np.linspace(1e-9,0.75,2000),lin=0,lout=2):
+    if (which == 'T'):
+        delW = constants.delWT
+        gam = constants.gamT
+        mu = constants.muT
+        gI = constants.gIT
+
+    elif (which == 'H'):
+        delW = constants.delWH
+        gam = constants.gamH
+        mu = constants.muH
+        gI = constants.gIH
+
+    mue = np.sqrt(4 * np.pi * constants.finestructure) / (2 * constants.meeV)
+    Pre_Factor = 1 / (5 * np.pi) * mue ** 4 * constants.NatUnits_cm3sm1
+    HFLevels = hyperfine.AllHFLevels(np.array([B_value]), delW, mu, gI)
+
+    Spatials = GetSpatialPartT(mu, alpha, beta, alphaprime, betaprime, HFLevels, potential, temps, rhos, lin,
+                              lout)
+    Spins = GetSpinPart(delW, alpha, beta, alphaprime, betaprime, [B_value], gam)[0]
+
+    return (Pre_Factor * Spatials * Spins)
