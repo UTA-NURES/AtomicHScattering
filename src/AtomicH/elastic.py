@@ -32,6 +32,12 @@ def GetPhaseShift(rhos, p, l=0, mu=muT, potential=potentials.Silvera_Triplet, ho
     State = wf[0]
     dState_dx = wf[1]
 
+    #Big_delta_l = (rhos * dState_dx - State) / (rhos * State)
+    #jl_ka = spherical_jn(l, p * rhos)
+    #jl_prime_ka = spherical_jn(l, p * rhos, derivative=True)
+    #nl_ka = spherical_yn(l, p * rhos)
+    #nl_prime_ka = spherical_yn(l, p * rhos, derivative=True)
+    
     # deltas = np.arctan((p*jl_prime_ka - Big_delta_l*jl_ka) / (p*nl_prime_ka - Big_delta_l * nl_ka))
     deltas = np.arctan(p * State / dState_dx) - p * rhos
     return deltas
