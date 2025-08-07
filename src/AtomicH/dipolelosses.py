@@ -93,30 +93,10 @@ def GetGFactor( channel=DipoleChannels[0],  B_value=1e-5, consts=constants.Hydro
 
 def GetSummedGFactor( channel=DipoleChannels[0],  B_value=1e-5, consts=constants.HydrogenConstants, Temperature=5e4, potential=potentials.Silvera_Triplet,rhos=np.linspace(1e-9,0.75,2000)):
 
-    mue = np.sqrt(4 * np.pi * constants.finestructure) / (2 * constants.meeV)
-    Pre_Factor = 1 / (5 * np.pi) * mue ** 4 * constants.NatUnits_cm3sm1
+    degeneracies =  [1,      1,      3,      5,      5,      5,      5]
+    PWaves =       [[0, 2], [2, 0], [2, 2], [2, 4], [4, 2], [4, 4], [4, 6]]
 
-    degeneracies = [1,
-                     1,
-                     3,
-                     5,
-                     5,
-                     5,
-                     5]
-
-    PWaves = [[0, 2],
-              [2, 0],
-              [2, 2],
-              [2, 4],
-              [4, 2],
-              [4, 4],
-              [4, 6]]
-
-    SpinMatrixElement = GetSpinPart(channel, B_value, consts)
+    G=0
     for pi in range(0,len(PWaves)):
-        SpatialMatrixElementSq= GetSpatialPart( channel, B_value, consts, Temperature, potential, rhos,PWaves[pi][0],PWaves[pi][1],'Radau')
-        if pi==0:
-            G=Pre_Factor * SpatialMatrixElementSq * SpinMatrixElement * degeneracies[pi]
-        else:
-            G=G+Pre_Factor * SpatialMatrixElementSq * SpinMatrixElement * degeneracies[pi]
+        G+=GetGFactor(channel,  B_value, consts, Temperature, potential,rhos,PWaves[pi][0],PWaves[pi][1])*degeneracies[pi]
     return G
