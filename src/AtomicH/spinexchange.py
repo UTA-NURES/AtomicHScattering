@@ -1,3 +1,8 @@
+# ================================================================================
+# this contains the important functions for calculating spin exchange loss rates
+# ================================================================================
+
+
 import elastic
 import dipolelosses
 import hyperfine

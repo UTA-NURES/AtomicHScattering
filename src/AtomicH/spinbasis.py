@@ -1,3 +1,7 @@
+# ================================================================================
+# this contains the spin basis transformations to apply non-zero B field mixing
+# ================================================================================
+
 import numpy as np
 from sympy import *
 

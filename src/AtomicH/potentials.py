@@ -1,4 +1,6 @@
-# This file contains the various potentials that can be used in the subsequent calculations.
+# ================================================================================
+# the various potentials that can be used in the subsequent calculations.
+# ================================================================================
 
 import numpy as np
 import pandas as pd

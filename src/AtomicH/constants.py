@@ -1,3 +1,7 @@
+# ================================================================================
+#  A compliation of constants that are used throughout the code.
+# ================================================================================
+
 import numpy as np
 
 # Fundamental constants

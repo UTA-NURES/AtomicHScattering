@@ -1,4 +1,6 @@
+# ================================================================================
 # this implements the Breit-Rabi calculation for the hyperfine levels of T and H.
+# ================================================================================
 
 import numpy as np
 from constants import *

@@ -1,3 +1,7 @@
+# ================================================================================
+# this contains the important functions for calculating dipole loss rates
+# ================================================================================
+
 import constants
 import elastic
 import potentials

@@ -1,3 +1,7 @@
+# ================================================================================
+#  Functions for elastic singlet and triplet phase shifts and cross sections
+# ================================================================================
+
 from constants import *
 import scipy
 
