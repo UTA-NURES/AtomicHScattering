@@ -23,8 +23,8 @@ def Wave_Function(rhos,pin,l, mu, potential=potentials.Silvera_Triplet, int_type
 
     State = scipy.integrate.solve_ivp(ddxToint, (rhos[0], rhos[-1]), init, t_eval=rhos, method=int_type)
     Normalization = np.sqrt(State.y[0] ** 2 + (State.y[1] / pin) ** 2)
-    #return (np.sqrt(2 / np.pi) * State.y[0] / Normalization[-1], np.sqrt(2 / np.pi) * State.y[1] / Normalization[-1])
-    return (State.y[0] / Normalization[-1], State.y[1] / Normalization[-1])
+    return (np.sqrt(2 / np.pi) * State.y[0] / Normalization[-1], np.sqrt(2 / np.pi) * State.y[1] / Normalization[-1])
+    #return (State.y[0] / Normalization[-1], State.y[1] / Normalization[-1])
 
 def GetPhaseShift(rhos, p, l, mu, potential=potentials.Silvera_Triplet, how_to_int='Radau'):
 
