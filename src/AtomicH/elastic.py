@@ -4,6 +4,8 @@ import scipy
 from scipy.integrate import odeint
 import potentials
 
+from scipy.special import spherical_jn, spherical_yn
+
 
 
 
@@ -32,18 +34,18 @@ def GetPhaseShift(rhos, p, l, mu, potential=potentials.Silvera_Triplet, how_to_i
     State = wf[0]
     dState_dx = wf[1]
 
-    #Big_delta_l = (rhos * dState_dx - State) / (rhos * State)
-    #jl_ka = spherical_jn(l, p * rhos)
-    #jl_prime_ka = spherical_jn(l, p * rhos, derivative=True)
-    #nl_ka = spherical_yn(l, p * rhos)
-    #nl_prime_ka = spherical_yn(l, p * rhos, derivative=True)
+    Big_delta_l = (rhos * dState_dx - State) / (rhos * State)
+    jl_ka = spherical_jn(l, p * rhos)
+    jl_prime_ka = spherical_jn(l, p * rhos, derivative=True)
+    nl_ka = spherical_yn(l, p * rhos)
+    nl_prime_ka = spherical_yn(l, p * rhos, derivative=True)
     
-    # deltas = np.arctan((p*jl_prime_ka - Big_delta_l*jl_ka) / (p*nl_prime_ka - Big_delta_l * nl_ka))
-    deltas = np.arctan(p * State / dState_dx) - p * rhos
+    deltas = np.arctan((p*jl_prime_ka - Big_delta_l*jl_ka) / (p*nl_prime_ka - Big_delta_l * nl_ka))
+    #deltas = np.arctan(p * State / dState_dx) - p * rhos
     return deltas
 
 def GetScatteringLength(rhos, p, l, mu, potential=potentials.Silvera_Triplet, how_to_int='Radau'):
     return -np.tan(GetPhaseShift(rhos, p, l, mu, potential, how_to_int)) / p
 
 def GetCrossSection(rhos, p, l, mu, potential=potentials.Silvera_Triplet, how_to_int='Radau'):
-    return 8*np.pi*GetScatteringLength(rhos, p, l, mu, potential, how_to_int)**2
+    return (8 * np.pi / p**2) * (2*l + 1) * np.sin(GetPhaseShift(rhos, p, l, mu, potential, how_to_int)[-1])**2
