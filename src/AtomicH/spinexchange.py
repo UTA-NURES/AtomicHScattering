@@ -29,7 +29,7 @@ def GetSpatialPart(channel=SpinExChannels[0], B_value=1e-5, consts=constants.Hyd
     Pout = dipolelosses.pprime(Pin, aHf, bHf, apHf, bpHf, consts.mu)
     Pabs = dipolelosses.p_abs(consts.mu, Pin, aHf, bHf, apHf, bpHf)
 
-    const = np.pi / (consts.mu * Pin)*constants.NatUnits_cm3sm1
+    const = np.pi**2 / (2*consts.mu * Pin)*constants.NatUnits_cm3sm1
     tdeltaaa = elastic.GetPhaseShift(rhos, Pabs, 0, consts.mu, triplet_potential, how_to_int)[-1]
     sdeltaaa = elastic.GetPhaseShift(rhos, Pabs, 0, consts.mu, singlet_potential, how_to_int)[-1]
 
