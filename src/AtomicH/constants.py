@@ -29,12 +29,12 @@ NatUnits_cm3sm1= 11.6
 
 # H and T constants
 class TritiumConstants:
-    delW = 1.516701470775e9      # Hyperfine splitting of hydrogen in Hz
-    gI   = 5.957924930           # Tritium nuclear g-factor
-    m    = 3.01604928            # Mass of tritium in Dalton
-    mu   = m * DaltonInEV / 2    # Reduced mass of T-T
-    gam  = 45.41483817 * 1e6     # Gyromagnetic constant for T In Hz T^-1
-    nm   = 2808.92113668e6       # nuclear mass of tritium
+    self.delW = 1.516701470775e9      # Hyperfine splitting of hydrogen in Hz
+    self.gI   = 5.957924930           # Tritium nuclear g-factor
+    self.m    = 3.01604928            # Mass of tritium in Dalton
+    self.mu   = m * DaltonInEV / 2    # Reduced mass of T-T
+    self.gam  = 45.41483817 * 1e6     # Gyromagnetic constant for T In Hz T^-1
+    self.nm   = 2808.92113668e6       # nuclear mass of tritium
 
 class HydrogenConstants:
     delW = 1.4204057517667e9     # Hyperfine splitting of hydrogen in Hz
@@ -56,7 +56,6 @@ umue           = .0000000029e-24
 ugame          = .0000087e6
 ufinestructure = .0000000011e-3
 umu_dip_couple = mu_dip_couple * (ufinestructure/finestructure + umeeV/meeV)
-
 
 #Unit conversions uncertainty
 uBohrInAng = .00000000082

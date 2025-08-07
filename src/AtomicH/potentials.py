@@ -8,6 +8,9 @@ import os
 from scipy.interpolate import interp1d
 from constants import *
 
+path=os.path.dirname(os.path.abspath(__file__))
+
+
 #=====================================
 # Silvera potentials in analytic form
 #=====================================
@@ -41,7 +44,6 @@ def Silvera_Singlet(R):
 #==========================
 
 # Adiabatic correction from  Journal of Molecular Spectroscopy. 1990 Oct 1;143(2):237-50.
-path=os.path.dirname(os.path.abspath(__file__))
 dat_Adiabatic=pd.read_excel(path+"/InputData/AdiabaticCorrection_Kolos.xlsx")
 Hvals=np.array(dat_Adiabatic.Hprime)
 DVals=np.array(dat_Adiabatic.D)
