@@ -48,4 +48,4 @@ def GetScatteringLength(rhos, p, l, mu, potential=potentials.Silvera_Triplet, ho
     return -np.tan(GetPhaseShift(rhos, p, l, mu, potential, how_to_int)) / p
 
 def GetCrossSection(rhos, p, l, mu, potential=potentials.Silvera_Triplet, how_to_int='Radau'):
-    return (8 * np.pi / p**2) * (2*l + 1) * np.sin(GetPhaseShift(rhos, p, l, mu, potential, how_to_int))**2[-1]
+    return (8 * np.pi / p**2) * (2*l + 1) * np.sin(GetPhaseShift(rhos, p, l, mu, potential, how_to_int)[-1])**2
