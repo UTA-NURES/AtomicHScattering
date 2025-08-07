@@ -4,6 +4,8 @@ import scipy
 from scipy.integrate import odeint
 import potentials
 
+from scipy.special import spherical_jn, spherical_yn
+
 
 
 
