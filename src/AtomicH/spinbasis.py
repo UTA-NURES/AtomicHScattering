@@ -6,12 +6,21 @@ import numpy as np
 from sympy import *
 
 
+#==================================
+# Symbol definitions -
+#==================================
+
+# The spin basis transformations manipulate matrices analytically
+#   and real numbers are sub'd in at the end- this allows for
+#   analytic expressions for spin matrix elements to be extracted
+#   for each channel, if desired.
 e=symbols('e')
 c=symbols('c')
 s=symbols('s')
 sr2=symbols('sr2')
 sr3=symbols('sr3')
 
+#Conversion functions between different labeling schemes
 def LetterToNumber(letter):
     if(letter=="a"):
         return 0
@@ -87,6 +96,9 @@ def StateToBasis(in1,in2,p=1):
     if(in1==2 and in2==3 and p==-1):
         return 15
 
+
+# The singlet projection operator in our spin basis
+
 SingletProj=np.array([
     [0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
     [0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
@@ -105,6 +117,9 @@ SingletProj=np.array([
     [0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
     [0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0]
                 ])
+
+
+# The triplet projection operator in our spin basis
 
 TripletProj=np.array([
     [1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
@@ -125,6 +140,8 @@ TripletProj=np.array([
     [0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1]
                 ])
 
+
+# The five dipole matrix projection operators in our spin basis
 
 Sig2m2proj=-1/2*np.array([
     [0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
@@ -244,21 +261,21 @@ Rotator=np.array([
 
 Sigmas={-2:Sig2m2proj,-1:Sig2m1proj,0:Sig20proj,1:Sig2p1proj,2:Sig2p2proj}
 
+#==========================================
+# Helper functions for matrix manipulation
+#==========================================
+
+#Rotate some matrix by R
 def TransformMatrix(M,R):
     return(np.matmul(np.transpose(R),np.matmul(M,R)))
 
-def RotateByEpsilon(M,eps):
-    M1=TransformMatrix(M,Rotator)
-    return(EvaluateWithEpsilon(M,eps))
-
-def EvaluateWithEpsilon(M,eps):
-    return np.array([(i+0*e).subs(e,eps) for i in M.flatten()]).reshape(M.shape).astype(float)
-
+# Find the element of the matrix for a given letter channel ab->a'b'
 def GetElement(M,alpha, beta, p1, alphaprime, betaprime, pprime):
     index1=StateToBasis(alpha,beta,p1)
     index2=StateToBasis(alphaprime,betaprime,pprime)
     return(M[index1,index2])
 
+#Rotate the elements of the dipole operator
 def GetRotatedElements():
     Rets={}
     for m in Sigmas.keys():

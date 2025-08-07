@@ -13,6 +13,9 @@ from scipy.interpolate import interp1d
 from scipy.integrate import quad
 
 
+# Dipole channel list. Note, the code is not restricted to these channels, but
+#  this is the most important set for atomic H and T trapping.
+
 DipoleChannels=[]
 DipoleChannels.append({'alpha':'d','beta':'d','alphaprime':'a','betaprime':'a'})
 DipoleChannels.append({'alpha':'d','beta':'d','alphaprime':'a','betaprime':'c'})
@@ -20,10 +23,10 @@ DipoleChannels.append({'alpha':'d','beta':'d','alphaprime':'a','betaprime':'d'})
 DipoleChannels.append({'alpha':'d','beta':'d','alphaprime':'c','betaprime':'c'})
 DipoleChannels.append({'alpha':'d','beta':'d','alphaprime':'c','betaprime':'d'})
 
-# A useful function for comparing to Stoof et al
-def B_Naught(B_Values):
-    return (1 + B_Values/3.17e-3)
 
+#================================
+# Kinematic helper functions
+#================================
 
 # The mean momentum for a molecule at temperature T.
 def p_of_temp(mu, T):
@@ -42,6 +45,11 @@ def pprime(pin, epsa, epsb, epsprimea, epsprimeb, mu):
 def p_abs(mu, pin, epsa, epsb, epsprimea, epsprimeb):
     psquared = pin**2 + mu * (epsa + epsb - epsprimea - epsprimeb)
     return np.sqrt(psquared)
+
+
+#=====================================
+# Components of square matrix elements
+#=====================================
 
 
 # This function evaluates the matrix element of the 1/r^3 operator between two plane wave solutions.
@@ -97,6 +105,11 @@ def GetSpinPart(channel=DipoleChannels[0], B_value=1e-5, consts=constants.Hydrog
     return(SpinPart)
 
 
+
+#==================================
+# Collision rate functions
+#==================================
+
 # This function gets G Factor for dipolar losses.
 # Follows Eq. 34  Stoof et al, Physical Review B 38.7 (1988): 4688.
 def GetGFactor( channel=DipoleChannels[0],  B_value=1e-5, consts=constants.HydrogenConstants, Temperature=5e4, potential=potentials.Silvera_Triplet,rhos=np.linspace(1e-9,0.75,2000),lin=0,lout=2):
@@ -118,3 +131,7 @@ def GetSummedGFactor( channel=DipoleChannels[0],  B_value=1e-5, consts=constants
     for pi in range(0,len(PWaves)):
         G+=GetGFactor(channel,  B_value, consts, Temperature, potential,rhos,PWaves[pi][0],PWaves[pi][1])*degeneracies[pi]
     return G
+
+# A useful function for comparing to Stoof et al
+def B_Naught(B_Values):
+    return (1 + B_Values/3.17e-3)

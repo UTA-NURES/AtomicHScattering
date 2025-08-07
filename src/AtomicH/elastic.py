@@ -12,8 +12,6 @@ from scipy.special import spherical_jn, spherical_yn
 
 
 
-
-
 def Wave_Function(rhos,pin,l, mu, potential=potentials.Silvera_Triplet, int_type='Radau'):
     def ddx(y, rho, mu, Potential, l, pin):
         u = y[0]
