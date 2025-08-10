@@ -135,3 +135,6 @@ def GetSummedGFactor( channel=DipoleChannels[0],  B_value=1e-5, consts=constants
 # A useful function for comparing to Stoof et al
 def B_Naught(B_Values):
     return (1 + B_Values/3.17e-3)
+
+def Invert_B_Naught(B_Values):
+    return (B_Values-1)*3.17e-3
