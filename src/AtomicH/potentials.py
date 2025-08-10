@@ -28,6 +28,11 @@ def Silvera_Triplet2(Rho):
     P = np.exp(0.09678-1.10173*R-0.03945*R**2)+np.exp(-(10.04/R-1)**2)*(-6.5/R**6-124/R**8-3285/R**10)
     return P * HartreeInEV
 
+def Silvera_Triplet2NoR8(Rho):
+    R = Rho * hcInEVAngstrom / BohrInAng
+    P = np.exp(0.09678-1.10173*R-0.03945*R**2)+np.exp(-(10.04/R-1)**2)*(-6.5/R**6)
+    return P * HartreeInEV
+
 # From Reviews of Modern Physics, 52(2), p.393.
 def Silvera_J(Rho):
     R = Rho * hcInEVAngstrom / BohrInAng
@@ -61,9 +66,11 @@ def TCorrectedSilvera_Triplet(R):
 # Kolos Potentials
 #===========================
 
+#The Journal of Chemical Physics. 1965 Oct 1;43(7):2429-41.
+dat_KolosSinglet1 = np.genfromtxt(path+"/InputData/Singlet_Kolos1965.csv", delimiter=',', skip_header=1)
 
-dat_KolosSinglet1 = np.genfromtxt(path+"/InputData/Singlet1_Kolos.csv", delimiter=',', skip_header=1)
-dat_KolosSinglet2 = np.genfromtxt(path+"/InputData/Singlet2_Kolos.csv", delimiter=',', skip_header=1)
+#Kolos 1974, Chemical Physics Letters. 1974 Feb 15;24(4):457-60.
+dat_KolosSinglet2 = np.genfromtxt(path+"/InputData/Singlet_Kolos1974.csv", delimiter=',', skip_header=1)
 
 interp_KolosSinglet1 = interp1d(dat_KolosSinglet1[:,0], dat_KolosSinglet1[:,1], kind = 'cubic',bounds_error=False, fill_value='extrapolate')
 interp_KolosSinglet2 = interp1d(dat_KolosSinglet2[:,0], -dat_KolosSinglet2[:,1], kind = 'cubic',bounds_error=False,fill_value='extrapolate')
@@ -72,7 +79,7 @@ interp_KolosSinglet2 = interp1d(dat_KolosSinglet2[:,0], -dat_KolosSinglet2[:,1],
 def Kolos_Singlet1(rho):
     return (interp_KolosSinglet1(rho/BohrInAng * hcInEVAngstrom) + 1) * HartreeInEV
 
-# From Journal of chemical physics, 84(6), pp.3278-3283.
+#Kolos 1974, Chemical Physics Letters. 1974 Feb 15;24(4):457-60.
 def Kolos_Singlet2(rho):
     return (interp_KolosSinglet2(rho/ BohrInAng * hcInEVAngstrom) + 1) * HartreeInEV
 
@@ -85,7 +92,7 @@ def Kolos_SingletCombo(rho):
     Decide3=(Rp>=split2_3)
     return (Decide1*(interp_KolosSinglet1(Rp) + 1)  + Decide2*(interp_KolosSinglet2(Rp) + 1) + Decide3*(interp_KolosSinglet2(split2_3) + 1)*(Rp/split2_3)**-6) * HartreeInEV
 
-dat_KolosTriplet = np.genfromtxt(path+"/InputData/Kolos_Triplet.csv", delimiter=',', skip_header=1)
+dat_KolosTriplet = np.genfromtxt(path+"/InputData/Triplet_Kolos1974.csv", delimiter=',', skip_header=1)
 interp_KolosTriplet = interp1d(dat_KolosTriplet[:,0], dat_KolosTriplet[:,1], kind = 'cubic', bounds_error = False, fill_value = 'extrapolate')
 
 # From Journal of molecular spectroscopy, 54(2), pp.303-311
@@ -153,8 +160,9 @@ def DipoleRadialPart(rho):
 #===========================================
 
 Triplets = {"Silvera":Silvera_Triplet,
-            #"Silvera2":Silvera_Triplet2,
+            "Silvera2":Silvera_Triplet2,
             "Uncorrected Silvera":UnCorrectedSilvera_Triplet,
+            "SilveraNoR8":Silvera_Triplet2NoR8,
             "Kolos":Kolos_Triplet,
             "Jamieson":Jamieson_TripletCombo}
 
