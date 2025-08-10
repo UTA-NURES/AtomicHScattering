@@ -195,7 +195,7 @@ Triplets = {"Kolos 65":Kolos_Triplet1,
 
 Singlets = {"Kolos 65":Kolos_Singlet1,
             "Kolos 74":Kolos_SingletCombo,
-            "Silvera":Silvera_Singlet,
+            #"Silvera":Silvera_Singlet,
             "Wolniewicz":Wolniewicz_Singlet,
             "Jamieson":Jamieson_Kolos_Mixed}
 
