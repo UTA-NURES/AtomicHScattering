@@ -42,6 +42,7 @@ TripletFiles =   ['Triplet_Kolos1965.csv',
                  'Triplet_Kolos1974.csv',
                  'Triplet_Jamieson2000.csv']
 
+
 # Fill these dictionaries with interpolators
 SingletInterps={}
 TripletInterps={}
@@ -63,7 +64,7 @@ def Kolos_Singlet1_VDW(R):
 def Kolos_Triplet1_VDW(R):
     return VanDerWaalsExtension(R,TripletInterps['Triplet_Kolos1965.csv'],9.5*bohr)
 
-#Kolos 1974, Chemical Physics Letters. 1974 Feb 15;24(4):457-60.
+#Kolos 1974, Chemical Physics Letters.  Volume 24, Issue 4, 15 February 1974, Pages 457-460
 def Kolos_Singlet2(R):
     return CompositePotential(R, [SingletInterps['Singlet_Kolos1965.csv'], SingletInterps['Singlet_Kolos1974.csv']], [0, 6.5 * bohr, 1e6])
 
@@ -152,20 +153,62 @@ def Silvera_Singlet(R):
 #==========================
 
 # Adiabatic correction from  Journal of Molecular Spectroscopy. 1990 Oct 1;143(2):237-50.
-dat_Adiabatic=pd.read_excel(path+"/InputData/AdiabaticCorrection_Kolos.xlsx")
-Hvals=np.array(dat_Adiabatic.Hprime)
-DVals=np.array(dat_Adiabatic.D)
-Corr=((Hvals[0:-1]-Hvals[-1])/(DVals[0:-1]-DVals[-1]))
-CorrInterp=interp1d(dat_Adiabatic.R[0:-1]*BohrInAng/hcInEVAngstrom,Corr,bounds_error=False,kind='linear',fill_value=(Corr[0],Corr[-1]))
+def ReadAdiabaticCorrection(file):
+    dat_Adiabatic = pd.read_csv(file)
+    Hvals = np.array(dat_Adiabatic.Hprime)
+    DVals = np.array(dat_Adiabatic.D)
+    Corr = ((Hvals[0:-1] - Hvals[-1]) / (DVals[0:-1] - DVals[-1]))
+    CorrInterp = interp1d(dat_Adiabatic.R[0:-1] * BohrInAng / hcInEVAngstrom, Corr, bounds_error=False, kind='linear',
+                          fill_value=(Corr[0], Corr[-1]))
+    return CorrInterp
 
-def UnCorrectedSilvera_Triplet(R):
-    return Silvera_Triplet(R)*(1-CorrInterp(R))
+TripletCorrection=ReadAdiabaticCorrection(path + "/InputData/AdiabaticTripletCorrection_Kolos1990.csv")
+SingletCorrection=ReadAdiabaticCorrection(path + "/InputData/AdiabaticSingletCorrection_Wolniewicz1993.csv")
 
-def AdiabaticCorr_Triplet(R):
-    return (Silvera_Triplet(R)*(2/3*CorrInterp(R)))
+def ApplyCorrection(R, Potential, Correction, scale):
+    return Potential(R)*(1+scale*Correction(R))
 
-def TCorrectedSilvera_Triplet(R):
-    return Silvera_Triplet(R)*(1-(2/3)*CorrInterp(R))
+
+# ==========================================
+# With adiabatic corrections
+#===========================================
+
+
+# Kolos has no adiabatic correction, so we apply with scale +1/3 for T and +1 for H
+def Kolos_Triplet2_VDW_T(R):
+    return ApplyCorrection(R,Kolos_Triplet2_VDW,TripletCorrection,+1/3)
+def Kolos_Singlet2_VDW_T(R):
+    return ApplyCorrection(R,Kolos_Singlet2_VDW,SingletCorrection,+1/3)
+def Kolos_Triplet2_VDW_H(R):
+    return ApplyCorrection(R,Kolos_Triplet2_VDW,TripletCorrection,+1)
+def Kolos_Singlet2_VDW_H(R):
+    return ApplyCorrection(R,Kolos_Singlet2_VDW,SingletCorrection,+1)
+
+# Jamieson and Wolniewicz both have the H correction, so we scale -2/3 for T and not for H
+def Jamieson_Triplet_VDW_T(R):
+    return ApplyCorrection(R,Jamieson_Triplet_VDW,TripletCorrection,-2/3)
+def Jamieson_Singlet_VDW_T(R):
+    return ApplyCorrection(R,Jamieson_Singlet_VDW,SingletCorrection,-2/3)
+def Wolniewicz_Singlet_VDW_T(R):
+    return ApplyCorrection(R,Wolniewicz_Singlet_VDW,SingletCorrection,-2/3)
+def Jamieson_Triplet_VDW_H(R):
+    return ApplyCorrection(R,Jamieson_Triplet_VDW,TripletCorrection,0)
+def Jamieson_Singlet_VDW_H(R):
+    return ApplyCorrection(R,Jamieson_Singlet_VDW,SingletCorrection,0)
+def Wolniewicz_Singlet_VDW_H(R):
+    return ApplyCorrection(R,Wolniewicz_Singlet_VDW,SingletCorrection,0)
+
+
+
+# As far as we can tell, Silvera does not have the correction.
+def Silvera_Triplet_T(R):
+    return ApplyCorrection(R, Silvera_Triplet, TripletCorrection, +1 / 3)
+def Silvera_Triplet2_T(R):
+    return ApplyCorrection(R, Silvera_Triplet2, TripletCorrection, +1 / 3)
+def Silvera_Triplet_H(R):
+    return ApplyCorrection(R, Silvera_Triplet, TripletCorrection, +1)
+def Silvera_Triplet2_H(R):
+    return ApplyCorrection(R, Silvera_Triplet2, TripletCorrection, +1)
 
 
 
@@ -185,3 +228,18 @@ Singlets = {#"Kolos 65":Kolos_Singlet1_VDW,
             "Wolniewicz":Wolniewicz_Singlet_VDW,
             "Jamieson":Jamieson_Singlet_VDW}
 
+TripletsT = {"Kolos 74":Kolos_Triplet2_VDW_T,
+            "Silvera":Silvera_Triplet_T,
+            "Jamieson":Jamieson_Triplet_VDW_T}
+
+SingletsT = {"Kolos 74":Kolos_Singlet2_VDW_T,
+            "Wolniewicz":Wolniewicz_Singlet_VDW_T,
+            "Jamieson":Jamieson_Singlet_VDW_T}
+
+TripletsH = {"Kolos 74":Kolos_Triplet2_VDW_H,
+            "Silvera":Silvera_Triplet_H,
+            "Jamieson":Jamieson_Triplet_VDW_H}
+
+SingletsH = {"Kolos 74":Kolos_Singlet2_VDW_H,
+            "Wolniewicz":Wolniewicz_Singlet_VDW_H,
+            "Jamieson":Jamieson_Singlet_VDW_H}
