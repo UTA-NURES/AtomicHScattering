@@ -17,7 +17,7 @@ SpinExChannels.append({'alpha':'c','beta':'c','alphaprime':'a','betaprime':'c'})
 SpinExChannels.append({'alpha':'c','beta':'c','alphaprime':'b','betaprime':'d'})
 
 
-def GetSpatialPart(channel=SpinExChannels[0], B_value=1e-5, consts=constants.HydrogenConstants, Temperature=5e-4, triplet_potential=potentials.Silvera_Triplet,singlet_potential=potentials.Kolos_SingletCombo,rhos=np.linspace(1e-9,0.75,2000),how_to_int='Radau'):
+def GetSpatialPart(channel=SpinExChannels[0], B_value=1e-5, consts=constants.HydrogenConstants, Temperature=5e-4, triplet_potential=potentials.Silvera_Triplet,singlet_potential=potentials.Kolos_Singlet2_VDW,rhos=np.linspace(1e-9,0.75,2000),how_to_int='Radau'):
     HFLevels = hyperfine.AllHFLevels(B_value, consts)
 
     aHf =  HFLevels[channel['alpha']]
@@ -48,7 +48,7 @@ def GetSpinPart(channel=SpinExChannels[0], B_value=1e-5, consts=constants.Hydrog
     return (SpinPart)
 
 
-def GetGFactor(channel=SpinExChannels[0],  B_value=1e-5, consts=constants.HydrogenConstants, Temperature=5e4, triplet_potential=potentials.Silvera_Triplet,singlet_potential=potentials.Kolos_SingletCombo,rhos=np.linspace(1e-9,0.75,20000),how_to_int='Radau'):
+def GetGFactor(channel=SpinExChannels[0],  B_value=1e-5, consts=constants.HydrogenConstants, Temperature=5e4, triplet_potential=potentials.Silvera_Triplet,singlet_potential=potentials.Kolos_Singlet2_VDW,rhos=np.linspace(1e-9,0.75,20000),how_to_int='Radau'):
 
     SpinPart    = GetSpinPart(    channel, B_value, consts)
     SpatialPart = GetSpatialPart( channel, B_value, consts, Temperature, triplet_potential, singlet_potential, rhos, how_to_int)
