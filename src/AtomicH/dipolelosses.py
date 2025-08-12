@@ -113,7 +113,6 @@ def GetSpinPart(channel=DipoleChannels[0], B_value=1e-5, consts=constants.Hydrog
 # This function gets G Factor for dipolar losses.
 # Follows Eq. 34  Stoof et al, Physical Review B 38.7 (1988): 4688.
 def GetGFactor( channel=DipoleChannels[0],  B_value=1e-5, consts=constants.HydrogenConstants, Temperature=5e4, potential=potentials.Silvera_Triplet,rhos=np.linspace(1e-9,0.75,2000),lin=0,lout=2):
-    mue = np.sqrt(4 * np.pi * constants.finestructure) / (2 * constants.meeV)
     Pre_Factor = 1 / (5 * np.pi) * mue ** 4 * constants.NatUnits_cm3sm1
 
     SpatialMatrixElementSq = GetSpatialPart( channel, B_value, consts, Temperature, potential, rhos, lin, lout,'Radau')
