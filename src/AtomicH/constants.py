@@ -35,6 +35,7 @@ class TritiumConstants:
     mu   = m * DaltonInEV / 2    # Reduced mass of T-T
     gam  = 45.41483817 * 1e6     # Gyromagnetic constant for T In Hz T^-1
     nm   = 2808.92113668e6       # nuclear mass of tritium
+    mue  = np.sqrt(4 * np.pi * finestructure) / (2 * meeV)
 
 class HydrogenConstants:
     delW = 1.4204057517667e9     # Hyperfine splitting of hydrogen in Hz
@@ -43,6 +44,7 @@ class HydrogenConstants:
     mu   = m*DaltonInEV/2        # Reduced mass of H-H
     gam  = 42.56385437*1e6       # Gyromagnetic constant for H In Hz T^-1
     nm   = 938.27208942e6        #mass of proton
+    mue  = np.sqrt(4 * np.pi * finestructure) / (2 * meeV)
 
 
 
