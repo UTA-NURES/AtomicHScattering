@@ -183,6 +183,14 @@ def Kolos_Triplet2_VDW_H(R):
     return ApplyCorrection(R,Kolos_Triplet2_VDW,TripletCorrection,+1)
 def Kolos_Singlet2_VDW_H(R):
     return ApplyCorrection(R,Kolos_Singlet2_VDW,SingletCorrection,+1)
+def Kolos_Triplet1_VDW_T(R):
+    return ApplyCorrection(R,Kolos_Triplet1_VDW,TripletCorrection,+1/3)
+def Kolos_Singlet1_VDW_T(R):
+    return ApplyCorrection(R,Kolos_Singlet1_VDW,SingletCorrection,+1/3)
+def Kolos_Triplet1_VDW_H(R):
+    return ApplyCorrection(R,Kolos_Triplet1_VDW,TripletCorrection,+1)
+def Kolos_Singlet1_VDW_H(R):
+    return ApplyCorrection(R,Kolos_Singlet1_VDW,SingletCorrection,+1)
 
 # Jamieson and Wolniewicz both have the H correction, so we scale -2/3 for T and not for H
 def Jamieson_Triplet_VDW_T(R):
@@ -228,18 +236,22 @@ Singlets = {#"Kolos 65":Kolos_Singlet1_VDW,
             "Wolniewicz":Wolniewicz_Singlet_VDW,
             "Jamieson":Jamieson_Singlet_VDW}
 
-TripletsT = {"Kolos 74":Kolos_Triplet2_VDW_T,
+TripletsT = {#"Kolos 65":Kolos_Triplet1_VDW_T,
+            "Kolos 74":Kolos_Triplet2_VDW_T,
             "Silvera":Silvera_Triplet_T,
             "Jamieson":Jamieson_Triplet_VDW_T}
 
-SingletsT = {"Kolos 74":Kolos_Singlet2_VDW_T,
+SingletsT = {#"Kolos 65":Kolos_Singlet1_VDW_T,
+            "Kolos 74":Kolos_Singlet2_VDW_T,
             "Wolniewicz":Wolniewicz_Singlet_VDW_T,
             "Jamieson":Jamieson_Singlet_VDW_T}
 
-TripletsH = {"Kolos 74":Kolos_Triplet2_VDW_H,
+TripletsH = {#"Kolos 65":Kolos_Triplet1_VDW_H,
+            "Kolos 74":Kolos_Triplet2_VDW_H,
             "Silvera":Silvera_Triplet_H,
             "Jamieson":Jamieson_Triplet_VDW_H}
 
-SingletsH = {"Kolos 74":Kolos_Singlet2_VDW_H,
+SingletsH = {#"Kolos 65":Kolos_Singlet1_VDW_H,
+            "Kolos 74":Kolos_Singlet2_VDW_H,
             "Wolniewicz":Wolniewicz_Singlet_VDW_H,
             "Jamieson":Jamieson_Singlet_VDW_H}
