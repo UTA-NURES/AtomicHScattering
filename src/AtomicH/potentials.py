@@ -115,6 +115,10 @@ def Jamieson_Singlet_HFD(R):
 def Jamieson_Triplet_HFD(R):
     return HFDExtension(R,Jamieson_Triplet,19.5*bohr)
 
+def Jamieson_Triplet_VDW(R):
+    return VanDerWaalsExtension(R,Jamieson_Triplet,19.5*bohr)
+
+
 # ==========================================
 #For illustration only -
 # radial dependence of the dipole potential

@@ -122,10 +122,13 @@ def GetGFactor( channel=DipoleChannels[0],  B_value=1e-5, consts=constants.Hydro
 
 # Here we sum over the first few partial waves, sufficient for 1% level calculation
 # of cross section up to approx 100 K.
-def GetSummedGFactor( channel=DipoleChannels[0],  B_value=1e-5, consts=constants.HydrogenConstants, Temperature=5e4, potential=potentials.Silvera_Triplet,rhos=np.linspace(1e-9,0.75,2000)):
+def GetSummedGFactor( channel=DipoleChannels[0],  B_value=1e-5, consts=constants.HydrogenConstants, Temperature=5e4, potential=potentials.Silvera_Triplet, PWaves= [[0, 2], [2, 0], [2, 2], [2, 4], [4, 2], [4, 4], [4, 6]], degeneracies =[1, 1, 3, 5, 5, 7, 9],rhos=np.linspace(1e-9,0.75,2000)):
 
-    degeneracies = [1,       1,      1,      1,      1,      1    ]
-    PWaves =       [[0, 2], [2, 2], [2, 4], [4, 2], [4, 4], [4, 6]]
+    #PWaves           = [[0, 2], [2, 0], [2, 2], [2, 4], [4, 2], [4, 4], [4, 6]]
+    #degeneracies_dM2 = [1,       1,      3,      5,      5,      7,      9    ]
+    #degeneracies_dM1 = [1,       1,      4,      5,      5,      8,      9    ]
+    #degeneracies=degeneracies_dM2
+
     G=0
     for pi in range(0,len(PWaves)):
         G+=GetGFactor(channel,  B_value, consts, Temperature, potential,rhos,PWaves[pi][0],PWaves[pi][1])*degeneracies[pi]
