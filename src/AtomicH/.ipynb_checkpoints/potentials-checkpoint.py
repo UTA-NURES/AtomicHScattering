@@ -66,8 +66,8 @@ for i in range(0,len(TripletFiles)):
 #===========================
 
 #The Journal of Chemical Physics. 1965 Oct 1;43(7):2429-41.
-def Kolos_Singlet1_VDW(R):
-    return VanDerWaalsExtension(R,SingletInterps['Singlet_Kolos1965.csv'],9.5*bohr)
+def Kolos_Singlet1_HFD(R):
+    return HFDExtension(R,SingletInterps['Singlet_Kolos1965.csv'],9.5*bohr)
 
 def Kolos_Triplet1_HFD(R):
     return HFDExtension(R,TripletInterps['Triplet_Kolos1965.csv'],9.5*bohr)
@@ -76,8 +76,8 @@ def Kolos_Triplet1_HFD(R):
 def Kolos_Singlet2(R):
     return CompositePotential(R, [SingletInterps['Singlet_Kolos1965.csv'], SingletInterps['Singlet_Kolos1974.csv']], [0, 6.5 * bohr, 1e6])
 
-def Kolos_Singlet2_VDW(R):
-    return VanDerWaalsExtension(R,Kolos_Singlet2,11.5*bohr)
+def Kolos_Singlet2_HFD(R):
+    return HFDExtension(R,Kolos_Singlet2,11.5*bohr)
 
 def Kolos_Triplet2(R):
     return CompositePotential(R, [TripletInterps['Triplet_Kolos1965.csv'], TripletInterps['Triplet_Kolos1974.csv']], [0, 6.5 * bohr, 1e6])
@@ -93,10 +93,10 @@ def Kolos_Triplet2_HFD(R):
 #==========================
 
 def Wolniewicz_Singlet(R):
-    return (SingletInterps['Singlet_Wolniewicz1993.csv'](R))
+    return (SingletInterps['Wolniewicz1993.csv'](R))
 
-def Wolniewicz_Singlet_VDW(R):
-    return (VanDerWaalsExtension(R,Wolniewicz_Singlet,12*bohr))
+def Wolniewicz_Singlet_HFD(R):
+    return (HFDExtension(R,Jamieson_Singlet,11.5*bohr))
 
 #==========================
 # Jamieson Potentials
@@ -104,19 +104,19 @@ def Wolniewicz_Singlet_VDW(R):
 # from Physical Review A. 2000 Mar 6;61(4):042705.
 
 def Jamieson_Singlet(R):
-    return CompositePotential(R, [SingletInterps['Singlet_Kolos1965.csv'], SingletInterps['Singlet_Jamieson2000.csv']], [0, 1 * bohr, 20])
+    return CompositePotential(R, [SingletInterps['Singlet_Kolos1965.csv'], SingletInterps['Singlet_Jamieson2000.csv']], [0, 1 * bohr, 1e6])
 
 def Jamieson_Triplet(R):
-    return CompositePotential(R, [TripletInterps['Triplet_Kolos1965.csv'], TripletInterps['Triplet_Jamieson2000.csv']], [0, 1 * bohr, 20])
+    return CompositePotential(R, [TripletInterps['Triplet_Kolos1965.csv'], TripletInterps['Triplet_Jamieson2000.csv']], [0, 1 * bohr, 1e6])
 
-def Jamieson_Singlet_VDW(R):
-    return VanDerWaalsExtension(R,Jamieson_Singlet,20*bohr)
+def Jamieson_Singlet_HFD(R):
+    return HFDExtension(R,Jamieson_Singlet,19.5*bohr)
 
 def Jamieson_Triplet_HFD(R):
-    return HFDExtension(R,Jamieson_Triplet,20*bohr)
+    return HFDExtension(R,Jamieson_Triplet,19.5*bohr)
 
 def Jamieson_Triplet_VDW(R):
-    return VanDerWaalsExtension(R,Jamieson_Triplet,20*bohr)
+    return VanDerWaalsExtension(R,Jamieson_Triplet,19.5*bohr)
 
 
 # ==========================================
@@ -191,35 +191,34 @@ def ApplyCorrection(R, Potential, Correction, scale):
 # Kolos has no adiabatic correction, so we apply with scale +1/3 for T and +1 for H
 def Kolos_Triplet2_HFD_T(R):
     return ApplyCorrection(R,Kolos_Triplet2_HFD,TripletCorrection,+1/3)
-def Kolos_Singlet2_VDW_T(R):
-    return ApplyCorrection(R,Kolos_Singlet2_VDW,SingletCorrection,+1/3)
+def Kolos_Singlet2_HFD_T(R):
+    return ApplyCorrection(R,Kolos_Singlet2_HFD,SingletCorrection,+1/3)
 def Kolos_Triplet2_HFD_H(R):
     return ApplyCorrection(R,Kolos_Triplet2_HFD,TripletCorrection,+1)
-def Kolos_Singlet2_VDW_H(R):
-    return ApplyCorrection(R,Kolos_Singlet2_VDW,SingletCorrection,+1)
+def Kolos_Singlet2_HFD_H(R):
+    return ApplyCorrection(R,Kolos_Singlet2_HFD,SingletCorrection,+1)
 def Kolos_Triplet1_HFD_T(R):
     return ApplyCorrection(R,Kolos_Triplet1_HFD,TripletCorrection,+1/3)
-def Kolos_Singlet1_VDW_T(R):
-    return ApplyCorrection(R,Kolos_Singlet1_VDW,SingletCorrection,+1/3)
+def Kolos_Singlet1_HFD_T(R):
+    return ApplyCorrection(R,Kolos_Singlet1_HFD,SingletCorrection,+1/3)
 def Kolos_Triplet1_HFD_H(R):
     return ApplyCorrection(R,Kolos_Triplet1_HFD,TripletCorrection,+1)
-def Kolos_Singlet1_VDW_H(R):
-    return ApplyCorrection(R,Kolos_Singlet1_VDW,SingletCorrection,+1)
+def Kolos_Singlet1_HFD_H(R):
+    return ApplyCorrection(R,Kolos_Singlet1_HFD,SingletCorrection,+1)
 
 # Jamieson and Wolniewicz both have the H correction, so we scale -2/3 for T and not for H
 def Jamieson_Triplet_HFD_T(R):
     return ApplyCorrection(R,Jamieson_Triplet_HFD,TripletCorrection,-2/3)
-    
-def Jamieson_Singlet_VDW_T(R):
-    return ApplyCorrection(R,Jamieson_Singlet_VDW,SingletCorrection,-2/3)
-def Wolniewicz_Singlet_VDW_T(R):
-    return ApplyCorrection(R,Wolniewicz_Singlet_VDW,SingletCorrection,-2/3)
+def Jamieson_Singlet_HFD_T(R):
+    return ApplyCorrection(R,Jamieson_Singlet_HFD,SingletCorrection,-2/3)
+def Wolniewicz_Singlet_HFD_T(R):
+    return ApplyCorrection(R,Wolniewicz_Singlet_HFD,SingletCorrection,-2/3)
 def Jamieson_Triplet_HFD_H(R):
     return ApplyCorrection(R,Jamieson_Triplet_HFD,TripletCorrection,0)
-def Jamieson_Singlet_VDW_H(R):
-    return ApplyCorrection(R,Jamieson_Singlet_VDW,SingletCorrection,0)
-def Wolniewicz_Singlet_VDW_H(R):
-    return ApplyCorrection(R,Wolniewicz_Singlet_VDW,SingletCorrection,0)
+def Jamieson_Singlet_HFD_H(R):
+    return ApplyCorrection(R,Jamieson_Singlet_HFD,SingletCorrection,0)
+def Wolniewicz_Singlet_HFD_H(R):
+    return ApplyCorrection(R,Wolniewicz_Singlet_HFD,SingletCorrection,0)
 
 
 
@@ -246,10 +245,10 @@ Triplets = {#"Kolos 65":Kolos_Triplet1_HFD,
             "Jamieson":Jamieson_Triplet_HFD}
 
 Singlets = {#"Kolos 65":Kolos_Singlet1_HFD,
-            "Kolos 74":Kolos_Singlet2_VDW,
+            "Kolos 74":Kolos_Singlet2_HFD,
             #"Silvera":Silvera_Singlet,
-            "Wolniewicz":Wolniewicz_Singlet_VDW,
-            "Jamieson":Jamieson_Singlet_VDW}
+            "Wolniewicz":Wolniewicz_Singlet_HFD,
+            "Jamieson":Jamieson_Singlet_HFD}
 
 TripletsT = {#"Kolos 65":Kolos_Triplet1_HFD_T,
             "Kolos 74":Kolos_Triplet2_HFD_T,
@@ -257,9 +256,9 @@ TripletsT = {#"Kolos 65":Kolos_Triplet1_HFD_T,
             "Jamieson":Jamieson_Triplet_HFD_T}
 
 SingletsT = {#"Kolos 65":Kolos_Singlet1_HFD_T,
-            "Kolos 74":Kolos_Singlet2_VDW_T,
-            "Wolniewicz":Wolniewicz_Singlet_VDW_T,
-            "Jamieson":Jamieson_Singlet_VDW_T}
+            "Kolos 74":Kolos_Singlet2_HFD_T,
+            "Wolniewicz":Wolniewicz_Singlet_HFD_T,
+            "Jamieson":Jamieson_Singlet_HFD_T}
 
 TripletsH = {#"Kolos 65":Kolos_Triplet1_HFD_H,
             "Kolos 74":Kolos_Triplet2_HFD_H,
@@ -267,6 +266,6 @@ TripletsH = {#"Kolos 65":Kolos_Triplet1_HFD_H,
             "Jamieson":Jamieson_Triplet_HFD_H}
 
 SingletsH = {#"Kolos 65":Kolos_Singlet1_HFD_H,
-            "Kolos 74":Kolos_Singlet2_VDW_H,
-            "Wolniewicz":Wolniewicz_Singlet_VDW_H,
-            "Jamieson":Jamieson_Singlet_VDW_H}
+            "Kolos 74":Kolos_Singlet2_HFD_H,
+            "Wolniewicz":Wolniewicz_Singlet_HFD_H,
+            "Jamieson":Jamieson_Singlet_HFD_H}
