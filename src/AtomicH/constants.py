@@ -5,12 +5,12 @@
 import numpy as np
 
 # Fundamental constants
-h              = 6.6260715e-34  # Planck constant in m^2 kg / s
-kb             = 1.380649e-23   # Boltzmann constant in JK^-1
+h              = 6.6260715e-34          # Planck constant in m^2 kg / s
+kb             = 1.380649e-23           # Boltzmann constant in JK^-1
 ge             = 2.00231930436092       # Electron g-factor
-meeV           = 5.1099895069e5 # mass of electron
+meeV           = 5.1099895069e5         # mass of electron
 mue            = 9.2847646917e-24       # magnetic moment of electron
-game           = -28024.9513861e6   # electron gamma factor in Hz T^-1
+game           = -28024.9513861e6       # electron gamma factor in Hz T^-1
 finestructure  = 7.2973525643e-3
 mu_dip_couple  = np.sqrt(4 * np.pi * finestructure) / (2 * meeV)
 
