@@ -104,10 +104,10 @@ def Wolniewicz_Singlet_VDW(R):
 # from Physical Review A. 2000 Mar 6;61(4):042705.
 
 def Jamieson_Singlet(R):
-    return CompositePotential(R, [SingletInterps['Singlet_Kolos1965.csv'], SingletInterps['Singlet_Jamieson2000.csv']], [0, 1 * bohr, 20])
+    return CompositePotential(R, [SingletInterps['Singlet_Kolos1965.csv'], SingletInterps['Singlet_Jamieson2000.csv']], [0, 1.5 * bohr, 1e6])
 
 def Jamieson_Triplet(R):
-    return CompositePotential(R, [TripletInterps['Triplet_Kolos1965.csv'], TripletInterps['Triplet_Jamieson2000.csv']], [0, 1 * bohr, 20])
+    return CompositePotential(R, [TripletInterps['Triplet_Kolos1965.csv'], TripletInterps['Triplet_Jamieson2000.csv']], [0, 1.5 * bohr, 1e6])
 
 def Jamieson_Singlet_VDW(R):
     return VanDerWaalsExtension(R,Jamieson_Singlet,20*bohr)
