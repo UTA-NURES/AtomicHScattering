@@ -48,10 +48,10 @@ def GetSpinPart(channel=SpinExChannels[0], B_value=1e-5, consts=constants.Hydrog
     return (SpinPart)
 
 
-def GetGFactor(channel=SpinExChannels[0],  B_value=1e-5, consts=constants.HydrogenConstants, Temperature=5e4, triplet_potential=potentials.Silvera_Triplet,singlet_potential=potentials.Kolos_Singlet2_VDW,rhos=np.linspace(1e-9,0.75,20000),how_to_int='Radau'):
+def GetGFactor(channel=SpinExChannels[0],  B_value=1e-5, consts=constants.HydrogenConstants, Temperature=5e4, triplet_potential=potentials.Silvera_Triplet,singlet_potential=potentials.Kolos_Singlet2_VDW,rhos=np.linspace(1e-9,0.75,20000),l=0,how_to_int='Radau'):
 
     SpinPart    = GetSpinPart(    channel, B_value, consts)
-    SpatialPart = GetSpatialPart( channel, B_value, consts, Temperature, triplet_potential, singlet_potential, rhos, how_to_int)
+    SpatialPart = GetSpatialPart( channel, B_value, consts, Temperature, triplet_potential, singlet_potential, rhos,l, how_to_int)
 
     return (SpinPart*SpatialPart)
 
