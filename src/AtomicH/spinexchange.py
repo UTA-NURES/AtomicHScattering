@@ -17,7 +17,7 @@ SpinExChannels.append({'alpha':'c','beta':'c','alphaprime':'a','betaprime':'c'})
 SpinExChannels.append({'alpha':'c','beta':'c','alphaprime':'b','betaprime':'d'})
 
 
-def GetSpatialPart(channel=SpinExChannels[0], B_value=1e-5, consts=constants.HydrogenConstants, Temperature=5e-4, triplet_potential=potentials.Silvera_Triplet,singlet_potential=potentials.Kolos_Singlet2_VDW,rhos=np.linspace(1e-9,0.75,2000),how_to_int='Radau'):
+def GetSpatialPart(channel=SpinExChannels[0], B_value=1e-5, consts=constants.HydrogenConstants, Temperature=5e-4, triplet_potential=potentials.Silvera_Triplet,singlet_potential=potentials.Kolos_Singlet2_VDW,rhos=np.linspace(1e-9,0.75,2000),l=0,how_to_int='Radau'):
     HFLevels = hyperfine.AllHFLevels(B_value, consts)
 
     aHf =  HFLevels[channel['alpha']]
@@ -30,10 +30,10 @@ def GetSpatialPart(channel=SpinExChannels[0], B_value=1e-5, consts=constants.Hyd
     Pabs = dipolelosses.p_abs(consts.mu, Pin, aHf, bHf, apHf, bpHf)
 
     const = np.pi**2 / (2*consts.mu * Pin)*constants.NatUnits_cm3sm1
-    tdeltaaa = elastic.GetPhaseShift(rhos, Pabs, 0, consts.mu, triplet_potential, how_to_int)[-1]
-    sdeltaaa = elastic.GetPhaseShift(rhos, Pabs, 0, consts.mu, singlet_potential, how_to_int)[-1]
+    tdeltaaa = elastic.GetPhaseShift(rhos, Pabs, l, consts.mu, triplet_potential, how_to_int)[-1]
+    sdeltaaa = elastic.GetPhaseShift(rhos, Pabs, l, consts.mu, singlet_potential, how_to_int)[-1]
 
-    SpatialPart = (const * (Pin * Pout / Pabs ** 2) * (np.sin(tdeltaaa - sdeltaaa) ** 2))
+    SpatialPart = (2*l+1)*(const * (Pin * Pout / Pabs ** 2) **(2*l+1)* (np.sin(tdeltaaa - sdeltaaa) ** 2))
 
     return (SpatialPart)
 
@@ -55,3 +55,8 @@ def GetGFactor(channel=SpinExChannels[0],  B_value=1e-5, consts=constants.Hydrog
 
     return (SpinPart*SpatialPart)
 
+def GetSummedGFactor( channel=SpinExChannels[0],  B_value=1e-5, consts=constants.HydrogenConstants, Temperature=5e4, triplet_potential=potentials.Silvera_Triplet, singlet_potential=potentials.Jamieson_Singlet_VDW, PWaves= [0,2,4,6],  rhos=np.linspace(1e-9,0.75,2000)):
+    G=0
+    for pi in range(0,len(PWaves)):
+        G+=GetGFactor(channel,  B_value, consts, Temperature, triplet_potential,singlet_potential, rhos,PWaves[pi])
+    return G
