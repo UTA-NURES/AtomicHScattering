@@ -1,6 +1,6 @@
 [project]
 name = "AtomicT"
-version = "0.0.3"
+version = "0.0.4"
 authors = [
   { name="Ben Jones", email="ben.jones@uta.edu" },
     { name="Morgan Elliott", email="morgan.elliott@uta.edu" }
@@ -16,5 +16,5 @@ license = "MIT"
 license-files = ["LICENSE"]
 
 [project.urls]
-Homepage = "https://github.com/UTA-NURES/AtomicTScattering"
-Issues = "https://github.com/UTA-NURES/AtomicTScattering/issues"
+Homepage = "https://github.com/UTA-NURES/AtomicT"
+Issues = "https://github.com/UTA-NURES/AtomicT/issues"
