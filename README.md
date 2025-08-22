@@ -1,16 +1,24 @@
+# Atomic T and H Cross Section Calculator
+
 This package can be used to evaluate the cross sections for elastic and inelastic scattering of cold atomic 
 hydrogen and tritium.  
 
 It accompanies the paper: 
 
+## Reference
+If you use this code, please cite the paper:
+
 "Elastic and Spin-Changing Cross Sections of Spin-Polarized Atomic Tritium"
 M.G. Elliot and B.J.P. Jones
-(University of Texas at Arlington)
+
+## Structure
 
 The source code is in the /src/ folder, and the /examples/ folder contains a set of Jupyter notebooks 
-that illustrate the use of code for various calculations.
+that illustrate the use of code for various calculations.  
 
-The examples provided are the following:
+## Examples
+
+The examples provided with the codeare the following:
 
 **Elastic Cross Section**
 Calculate the elastic scattering dd->dd cross section as a function of magnetic field and temperature
