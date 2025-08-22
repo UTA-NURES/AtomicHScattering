@@ -21,14 +21,14 @@ setup(
     # There are some restrictions on what makes a valid project name
     # specification here:
     # https://packaging.python.org/specifications/core-metadata/#name
-    name="AtomicH_Project8",  # Required
+    name="AtomicT_Project8",  # Required
     # Versions should comply with PEP 440:
     # https://www.python.org/dev/peps/pep-0440/
     #
     # For a discussion on single-sourcing the version across setup.py and the
     # project code, see
     # https://packaging.python.org/guides/single-sourcing-package-version/
-    version="0.0.2",  # Required
+    version="0.0.4",  # Required
     # This is a one-line description or tagline of what your project does. This
     # corresponds to the "Summary" metadata field:
     # https://packaging.python.org/specifications/core-metadata/#summary
@@ -57,7 +57,7 @@ setup(
     #
     # This field corresponds to the "Home-Page" metadata field:
     # https://packaging.python.org/specifications/core-metadata/#home-page-optional
-    url="https://github.com/UTA-NURES/AtomicHScattering",  # Optional
+    url="https://github.com/UTA-NURES/AtomicTScattering",  # Optional
     # This should be your name or the name of the organization which owns the
     # project.
     author="Ben Jones and Morgan Elliott",  # Optional
@@ -118,7 +118,7 @@ setup(
     #
     # For an analysis of "install_requires" vs pip's requirements files see:
     # https://packaging.python.org/discussions/install-requires-vs-requirements/
-    install_requires=["numpy","matplotlib","scipy","sympy"],  # Optional
+    install_requires=["numpy","matplotlib","scipy","sympy","pandas","notebook"],  # Optional
     # List additional groups of dependencies here (e.g. development
     # dependencies). Users will be able to install these using the "extras"
     # syntax, for example:

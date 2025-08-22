@@ -3,7 +3,7 @@
 # ================================================================================
 
 import numpy as np
-from AtomicH.constants import *
+from AtomicT.constants import *
 
 
 def GetHyperFineLevels(B_Values, pm, mf, consts=HydrogenConstants, gL=1,  L=0, S=0.5, I=0.5, J=0.5):

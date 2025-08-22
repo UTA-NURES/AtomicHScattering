@@ -2,8 +2,8 @@
 #  Functions for elastic singlet and triplet phase shifts and cross sections
 # ================================================================================
 
-from AtomicH.constants import *
-from AtomicH import potentials
+from AtomicT.constants import *
+from AtomicT import potentials
 
 import scipy
 from scipy.special import spherical_jn, spherical_yn
