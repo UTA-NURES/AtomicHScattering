@@ -2,11 +2,11 @@
 # this contains the important functions for calculating dipole loss rates
 # ================================================================================
 
-from AtomicT import constants
-from AtomicT import elastic
-from AtomicT import potentials
-from AtomicT import hyperfine
-from AtomicT import spinbasis
+from AtomicTrit import constants
+from AtomicTrit import elastic
+from AtomicTrit import potentials
+from AtomicTrit import hyperfine
+from AtomicTrit import spinbasis
 import sympy
 import numpy as np
 from scipy.interpolate import interp1d

@@ -3,12 +3,12 @@
 # ================================================================================
 
 
-from AtomicT import elastic
-from AtomicT import dipolelosses
-from AtomicT import hyperfine
-from AtomicT import constants
-from AtomicT import spinbasis
-from AtomicT import potentials
+from AtomicTrit import elastic
+from AtomicTrit import dipolelosses
+from AtomicTrit import hyperfine
+from AtomicTrit import constants
+from AtomicTrit import spinbasis
+from AtomicTrit import potentials
 import numpy as np
 
 SpinExChannels=[]

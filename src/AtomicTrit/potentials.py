@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import os
 from scipy.interpolate import interp1d
-from AtomicT.constants import *
+from AtomicTrit.constants import *
 
 path=os.path.dirname(os.path.abspath(__file__))
 
